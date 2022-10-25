@@ -10,15 +10,21 @@
     "@types/node": "^16.18.0",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
+    "@types/react-router-dom": "^5.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start:desk": "npm run build:desk && electron ./desktop/electron.js",
+    "start:desk:alt": "electron ./desktop/electron.js",
+    "build": "PUBLIC_URL=./ react-scripts build",
+    "build:alt": "react-scripts build",
+    "build:desk": "tsc -p ./desktop/tsconf.json",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -39,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^21.2.0"
   }
 }
