@@ -1,19 +1,16 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import AboutPage from "./about";
-import Header from "./header";
 import HomePage from "./home";
+import NotFound from "./notFound";
 
 const MainApp = () => {
     return (
         <div>
-            <Header />
-
             <Routes>
                 <Route path='/' element={<HomePage />} />
-                <Route path='/about/*' element={<AboutPage />} />
+                <Route path='/files' element={<HomePage />} />
+                <Route path='/*' element={<NotFound />} />
             </Routes>
-
         </div>
     )
 }
