@@ -1,6 +1,100 @@
-*{
+/* Cantarell Font */
+@import url('https://fonts.googleapis.com/css2?family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* import variable file */
+@import "./var.scss";
+
+/* scroll */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.075);
+}
+
+/* all */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Cantarell', sans-serif;
 }
 
+/* body */
+body {
+    background: $theme-one-background;
+    color: $theme-one-font-color;
+}
+
+/* main app */
+.app {
+    display: flex;
+
+    .side-bar {
+        height: 100vh;
+        background-color: $theme-one-sidebar-background;
+        width: 200px;
+        border-right: 1px solid $theme-one-border-color;
+    }
+
+    &>.main-con {
+        flex-grow: 1;
+    }
+}
+
+/* file */
+.files-con {
+    height: 100vh;
+    display: flex;
+    place-items: stretch;
+    scrollbar-gutter: auto;
+    flex-shrink: initial;
+    flex-basis: initial;
+    flex-direction: column;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+
+    .file-header {
+        min-height: 60px;
+        border-bottom: 1px solid $theme-one-border-color;
+    }
+
+    .files-con-main {
+        overflow-y: scroll;
+        height: auto;
+    }
+
+}
+
+.empty-dir {
+    width: 100%;
+    height: 80vh;
+    position: relative;
+    text-align: center;
+
+    &>div {
+        line-height: 1;
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    i{
+        font-size: 8rem;
+        color: $theme-one-icon-color;
+        opacity: .5;
+    }
+    
+    span{
+        font-size: 1.5rem;
+        font-weight: 100;
+        opacity: .6;
+    }
+}
