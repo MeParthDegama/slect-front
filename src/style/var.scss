@@ -1,6 +1,13 @@
 /* Theme One Variable */
-$theme-one-background: #0E0F0F;
-$theme-one-sidebar-background: #141515;
-$theme-one-border-color: rgba(255, 255, 255, .1);
-$theme-one-font-color: #C8C8C8;
-$theme-one-icon-color: #9C9C9C;
+$background: #0E0F0F;
+$sidebar-background: #141515;
+$border-color: rgba(255, 255, 255, .1);
+$font-color: #C8C8C8;
+$icon-color: #9C9C9C;
+
+$btn-height: 30px;
+$btn-color: rgba(255, 255, 255, 0.05);
+$btn-color-hover: rgba(255, 255, 255, 0.075);
+$btn-color-active: rgba(255, 255, 255, 0.1);
+
+$radius: 4px;

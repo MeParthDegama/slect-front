@@ -28,24 +28,91 @@
 
 /* body */
 body {
-    background: $theme-one-background;
-    color: $theme-one-font-color;
+    background: $background;
+    color: $font-color;
 }
 
 /* main app */
 .app {
     display: flex;
 
-    .side-bar {
-        height: 100vh;
-        background-color: $theme-one-sidebar-background;
-        width: 200px;
-        border-right: 1px solid $theme-one-border-color;
-    }
 
     &>.main-con {
         flex-grow: 1;
     }
+}
+
+.side-bar {
+    height: 100vh;
+    display: flex;
+    place-items: stretch;
+    scrollbar-gutter: auto;
+    flex-shrink: initial;
+    flex-basis: initial;
+    flex-direction: column;
+    -webkit-box-flex: 1;
+    width: 200px;
+    background-color: $sidebar-background;
+    border-right: 1px solid $border-color;
+
+    & .user-btn {
+        height: 60px;
+        padding: 8px 12px;
+
+        button {
+            height: 100%;
+            width: 100%;
+            font-size: 18px;
+            padding: 0 8px;
+            display: flex;
+
+            img {
+                margin: auto;
+                height: 70%;
+                border-radius: 50%;
+            }
+
+            span {
+                margin: auto 0;
+                margin-left: 10px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .nav-bar {
+        overflow-y: auto;
+        height: 100vh;
+        padding: 10px 12px;
+
+        button{
+            margin: 8px 0;
+            width: 100%;
+        }
+        
+        .group-title{
+            font-size: 14px;
+            margin: 0px 12px;
+            margin-top: 20px;
+            display: block;
+        }
+        
+        .group-title:first-child{
+            margin-top: 0px;
+        }
+    }
+
+    .setting-nav{
+        min-height: 50px;
+        padding: 10px 12px;
+        button{
+            margin: 0;
+            width: 100%;
+        }
+    }
+
 }
 
 /* file */
@@ -62,12 +129,60 @@ body {
 
     .file-header {
         min-height: 60px;
-        border-bottom: 1px solid $theme-one-border-color;
+        border-bottom: 1px solid $border-color;
+        display: flex;
+        padding: 0 20px;
+        justify-content: space-between;
+
+        .path-button {
+            font-size: 16px;
+            padding: 0 10px;
+        }
+
+        .file-path {
+            display: flex;
+
+            & i {
+                font-size: 14px !important;
+                margin: auto 8px;
+                display: flex;
+
+                &::before {
+                    margin: auto;
+                }
+            }
+
+            & i:last-child {
+                margin: auto 16px;
+            }
+        }
+
+        .file-btn {
+            display: flex;
+        }
+
+        & * {
+            margin: auto 0;
+        }
+    }
+
+    .file-footer {
+        color: $font-color;
+        min-height: 40px;
+        border-top: 1px solid $border-color;
+        display: flex;
+        padding: 0 20px;
+
+        &>* {
+            margin: auto 0;
+            font-size: 16px;
+        }
+
     }
 
     .files-con-main {
         overflow-y: scroll;
-        height: auto;
+        height: 100vh;
     }
 
 }
@@ -85,16 +200,18 @@ body {
         left: 50%;
         transform: translate(-50%, -50%);
     }
-    
-    i{
+
+    i {
         font-size: 8rem;
-        color: $theme-one-icon-color;
+        color: $icon-color;
         opacity: .5;
     }
-    
-    span{
+
+    span {
         font-size: 1.5rem;
         font-weight: 100;
         opacity: .6;
     }
 }
+
+@import "btn.scss";

@@ -1,4 +1,5 @@
 import React from "react";
+import FileFooter from "../components/fileFooter";
 import FilesHeader from "../components/filesHeader";
 
 const HomePage = () => {
@@ -27,27 +28,29 @@ const HomePage = () => {
                             <h1>Hello, World!</h1>
                             <h1>Hello, World!</h1>
                             <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
+                            <h1>Hellowold</h1>
                             <h1>Hello, World!</h1>
                         </div>
                     )
                 })()}
             </div>
+            <FileFooter />
         </div>
     )
 }
