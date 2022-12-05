@@ -1,6 +1,7 @@
 import React from "react";
-import FileFooter from "../components/fileFooter";
+import FileFooter from "../components/filesFooter";
 import FilesHeader from "../components/filesHeader";
+import FilesList from "../components/filesList";
 
 const HomePage = () => {
 
@@ -22,32 +23,7 @@ const HomePage = () => {
                             </div>
                         )
                     }
-                    return (
-                        <div>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hello, World!</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hellowold</h1>
-                            <h1>Hello, World!</h1>
-                        </div>
-                    )
+                    return <FilesList />
                 })()}
             </div>
             <FileFooter />

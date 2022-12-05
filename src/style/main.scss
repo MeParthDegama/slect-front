@@ -24,6 +24,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Cantarell', sans-serif;
+    user-select: none;
 }
 
 /* body */
@@ -67,7 +68,7 @@ body {
             display: flex;
 
             img {
-                margin: auto;
+                margin: auto 0;
                 height: 70%;
                 border-radius: 50%;
             }
@@ -87,32 +88,49 @@ body {
         height: 100vh;
         padding: 10px 12px;
 
-        button{
+        button {
             margin: 8px 0;
             width: 100%;
+
+            span {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
         }
-        
-        .group-title{
+
+        .group-title {
             font-size: 14px;
             margin: 0px 12px;
             margin-top: 20px;
             display: block;
         }
-        
-        .group-title:first-child{
+
+        .group-title:first-child {
             margin-top: 0px;
         }
     }
 
-    .setting-nav{
+    .setting-nav {
         min-height: 50px;
         padding: 10px 12px;
-        button{
+
+        button {
             margin: 0;
             width: 100%;
         }
     }
 
+}
+
+.side-bar-exp {
+    position: absolute;
+    width: 6px;
+    height: 100vh;
+    transform: translateX(-50%);
+    left: 200px;
+    cursor: col-resize;
+    display: block;
 }
 
 /* file */
@@ -181,7 +199,7 @@ body {
     }
 
     .files-con-main {
-        overflow-y: scroll;
+        overflow-y: auto;
         height: 100vh;
     }
 
@@ -211,6 +229,62 @@ body {
         font-size: 1.5rem;
         font-weight: 100;
         opacity: .6;
+    }
+}
+
+.files-list {
+    margin: 10px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    justify-content: space-between;
+
+    .file-item {
+        display: flex;
+        flex-direction: column;
+        width: 100px;
+        text-align: center;
+        margin: 15px;
+        overflow: hidden;
+
+        .icon{
+            width: 100px;
+            height: 100px;
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+
+        &:hover {
+            span {
+                background: $btn-color;
+            }
+        }
+
+        &:active {
+            span {
+                background: $btn-color-hover !important;
+            }
+        }
+
+        span {
+            transition: .4s;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: fit-content;
+            max-width: 100%;
+            margin: auto;
+            padding: 2px 6px;
+            border-radius: $radius;
+            cursor: default;
+            font-size: 16px;
+        }
+
+        &.active {
+            span {
+                background: $btn-color;
+            }
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-const FileFooter = () => {
+const FilesFooter = () => {
     return (
         <div className="file-footer">
             <div>
@@ -10,4 +10,4 @@ const FileFooter = () => {
     )
 }
 
-export default FileFooter
+export default FilesFooter

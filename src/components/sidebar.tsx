@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IconButton } from "../elements/button";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
+import {change as changeWidth} from "../state/sidebarwidthSlices";
 
 const SideBar = () => {
+
+    let sidebarWidth = useAppSelector(state => state.sidebarwidth.value)
+
     return (
-        <div className="side-bar">
+        <div className="side-bar" style={{minWidth: sidebarWidth}}>
             <div className="user-btn">
                 <button className="btn btn-ivc">
-                    <img src={"/img/profile.jpg"} />
+                    <img src={"/img/profile.jpg"} alt={"Robert Devid"} />
                     <span>
-                        Robert Devid DevidDevid Devid
+                        Robert Devid
                     </span>
                 </button>
             </div>
@@ -40,4 +45,40 @@ const SideBar = () => {
     )
 }
 
-export default SideBar
+const SideBarExp = () => {
+
+    let sidebarWidth = useAppSelector(state => state.sidebarwidth.value)
+    const dispatch = useAppDispatch()
+
+    const [change, setChange] = useState(false);
+
+    const mouseDown = () => {
+        console.log("down");
+        setChange(true)
+    }
+
+    const mouseUp = () => {
+        console.log("up");
+        setChange(false)
+    }
+
+    document.onmousemove = (e) => {
+        if (change) {
+            if (e.clientX <= 170) {
+                dispatch(changeWidth(170))
+            } else if (e.clientX >= 400) {
+                dispatch(changeWidth(400))
+            } else {
+                dispatch(changeWidth(e.clientX))
+            }
+        }
+    }
+
+    return (
+        <div className="side-bar-exp" onMouseDown={mouseDown} onMouseUp={mouseUp} style={{left: sidebarWidth}}>
+
+        </div>
+    )
+}
+
+export { SideBar, SideBarExp }
