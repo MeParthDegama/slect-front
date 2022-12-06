@@ -1,0 +1,218 @@
+.btn {
+    height: $btn-height;
+    color: $font-color;
+    outline: none;
+    border: 0;
+    border-radius: $radius;
+    background: $btn-color;
+    cursor: pointer;
+    transition: .4s;
+
+    &:hover,
+    &:focus-visible {
+        background: $btn-color-hover;
+    }
+
+    &:active {
+        background: $btn-color-active;
+    }
+
+    &.btn-ivc {
+        background: #fff0;
+
+        &:hover,
+        &:focus-visible {
+            background: $btn-color;
+        }
+
+        &:active {
+            background: $btn-color-hover;
+        }
+    }
+
+    &.ivc {
+        background: #fff0 !important;
+
+        &:hover,
+        &:focus-visible {
+            background: $btn-color !important;
+        }
+
+        &:active {
+            background: $btn-color-hover !important;
+        }
+
+        &.active {
+            background: $btn-color !important;
+        }
+    }
+
+    &.btn-primary {
+        background: $primary-color;
+
+        &:hover,
+        &:focus-visible {
+            background: lighten($primary-color, 7.5);
+        }
+
+        &:active {
+            background: darken($primary-color, 5);
+        }
+    }
+
+    &.btn-std {
+        font-size: 16px;
+        padding: 0 12px;
+        margin: 5px;
+    }
+
+    &.btn-icon {
+        display: flex;
+        font-size: 16px;
+        padding: 0 12px;
+        margin: 5px;
+
+        * {
+            margin: auto 0;
+        }
+
+    }
+
+    &.btn-toggle {
+        width: $btn-height * 2;
+        display: flex;
+        font-size: 16px;
+        margin: 5px;
+
+        .btn-active {
+            position: absolute;
+            width: $btn-height;
+            height: $btn-height;
+            background: $btn-color;
+            border-radius: $radius;
+            transition: .4s;
+
+            &.active-right {
+                transform: translateX(100%);
+            }
+        }
+
+        .btn-icons {
+            width: $btn-height * 2;
+            display: flex;
+
+            * {
+                margin: auto;
+            }
+        }
+
+        * {
+            margin: auto 0;
+        }
+
+    }
+
+}
+
+.input {
+    margin: 5px;
+
+    input {
+        height: $btn-height;
+        color: $font-color;
+        outline: none;
+        border: 0;
+        border-radius: $radius;
+        background: $btn-color;
+        transition: .4s;
+        font-size: 16px;
+        padding: 0 12px;
+        width: 100%;
+
+        &:hover {
+            background: $btn-color-hover;
+        }
+
+        &:focus {
+            background: $btn-color-active;
+        }
+
+    }
+
+    &.input-icon {
+        .icon {
+            position: absolute;
+            height: $btn-height;
+            display: flex;
+            margin: 0 10px;
+
+            i {
+                margin: auto;
+            }
+        }
+
+        input {
+            padding-left: 32px;
+        }
+    }
+
+}
+
+.checkbox {
+
+    display: block;
+    position: relative;
+    padding-left: 28px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: $font-color;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: default;
+        height: 0;
+        width: 0;
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 3px;
+        left: 0;
+        height: 18px;
+        width: 18px;
+        background-color: $btn-color;
+        border-radius: $radius;
+        transition: .4s;
+        cursor: pointer;
+
+        &:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+    }
+
+    &:hover input~.checkmark {
+        background-color: $btn-color-hover;
+    }
+
+    input:checked~.checkmark {
+        background-color: $primary-color !important;
+    }
+
+    input:checked~.checkmark:after {
+        display: block;
+    }
+
+    input:focus~.checkmark {
+        background-color: $btn-color-active;
+    }
+
+    .checkbox-title {
+        cursor: pointer;
+    }
+
+}

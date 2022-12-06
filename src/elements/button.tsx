@@ -1,12 +1,13 @@
 import React from "react";
 
 type ButtonProp = {
-    name: string
+    name: string,
+    primary?: boolean,
 }
 
-const Button = ({ name }: ButtonProp) => {
+const Button = ({ name, primary }: ButtonProp) => {
     return (
-        <button className="btn btn-std">
+        <button className={`btn btn-std ${primary ? "btn-primary" : ""}`}>
             {name}
         </button>
     )

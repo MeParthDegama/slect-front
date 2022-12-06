@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import {SideBar, SideBarExp} from "../components/sidebar";
 import HomePage from "./home";
+import Login from "./login";
 import NotFound from "./notFound";
 
 const MainApp = () => {

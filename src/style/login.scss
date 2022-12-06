@@ -1,0 +1,61 @@
+.login {
+
+    .host-title {
+        margin: 40px 80px;
+        font-size: 2rem;
+        font-weight: normal;
+    }
+
+    .login-box {
+
+        padding: 10px;
+        width: 250px;
+        position: absolute;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, -50%);
+
+        .login-title {
+            font-size: 1.9rem;
+        }
+
+        button {
+            width: 100%;
+            margin: 0px 0;
+            margin: 5px 0;
+        }
+
+        .input {
+            width: 100%;
+            margin: 0;
+            margin: 5px 0;
+
+            &.mb {
+                margin-bottom: 10px;
+            }
+
+            &.mt {
+                margin-top: 10px;
+            }
+        }
+
+        .checkbox {
+            margin-top: 8px;
+            margin-bottom: 5px;
+        }
+
+        .forgot-link {
+            font-size: 14px;
+            text-align: right;
+
+            a {
+                color: $font-color;
+
+                &:hover {
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+
+}
