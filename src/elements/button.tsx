@@ -29,6 +29,20 @@ const IconButton = ({ name, icon, ivc, active }: IconButtonProp) => {
     )
 }
 
+type IconButtonPropSquare = {
+    icon: JSX.Element
+    ivc?: boolean,
+    active?: boolean
+}
+
+const IconButtonSquare = ({ icon, ivc, active }: IconButtonPropSquare) => {
+    return (
+        <button className={`btn btn-icon btn-square ${ivc ? "ivc" : ""} ${active ? "active" : ""}`}>
+            {icon}
+        </button>
+    )
+}
+
 type ToggleButtonProp = {
     iconLeft: JSX.Element
     iconRight: JSX.Element
@@ -48,4 +62,4 @@ const ToogleButton = ({ iconLeft, iconRight, active }: ToggleButtonProp) => {
 }
 
 
-export { Button, IconButton, ToogleButton }
+export { Button, IconButton, IconButtonSquare, ToogleButton }

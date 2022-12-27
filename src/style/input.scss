@@ -76,6 +76,11 @@
             margin: auto 0;
         }
 
+        &.btn-square{
+            padding: 0px;
+            width: $btn-height;
+        }
+
     }
 
     &.btn-toggle {
