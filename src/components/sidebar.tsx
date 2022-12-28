@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IconButton } from "../elements/button";
+import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
-import {change as changeWidth} from "../state/sidebarwidthSlices";
+import { change as changeWidth } from "../state/sidebarwidthSlices";
+import { addNotify } from "../state/notifySlices";
 
 const SideBar = () => {
 
     let sidebarWidth = useAppSelector(state => state.sidebarwidth.value)
 
+    const dispatch = useAppDispatch()
+
+    const NewNotification = () => {
+        dispatch(addNotify(<NotifyBlock title="Login Faild" des="Username or Password invalid" status={NotifyBlockEnum.ERROR} />))
+    }
+
+
     return (
-        <div className="side-bar" style={{minWidth: sidebarWidth}}>
+        <div className="side-bar" style={{ minWidth: sidebarWidth }}>
             <div className="user-btn">
-                <button className="btn btn-ivc">
+                <button className="btn btn-ivc" onClick={NewNotification}>
                     <img src={"/img/profile.jpg"} alt={"Robert Devid"} />
                     <span>
                         Robert Devid
@@ -75,7 +84,7 @@ const SideBarExp = () => {
     }
 
     return (
-        <div className="side-bar-exp" onMouseDown={mouseDown} onMouseUp={mouseUp} style={{left: sidebarWidth}}>
+        <div className="side-bar-exp" onMouseDown={mouseDown} onMouseUp={mouseUp} style={{ left: sidebarWidth }}>
 
         </div>
     )
