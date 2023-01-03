@@ -33,11 +33,12 @@ type IconButtonPropSquare = {
     icon: JSX.Element
     ivc?: boolean,
     active?: boolean
+    onClick: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 
-const IconButtonSquare = ({ icon, ivc, active }: IconButtonPropSquare) => {
+const IconButtonSquare = ({ icon, ivc, active, onClick }: IconButtonPropSquare) => {
     return (
-        <button className={`btn btn-icon btn-square ${ivc ? "ivc" : ""} ${active ? "active" : ""}`}>
+        <button onClick={onClick} className={`btn btn-icon btn-square ${ivc ? "ivc" : ""} ${active ? "active" : ""}`}>
             {icon}
         </button>
     )

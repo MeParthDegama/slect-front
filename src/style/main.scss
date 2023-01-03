@@ -31,6 +31,9 @@
 body {
     background: $background;
     color: $font-color;
+
+    width: 100%;
+    overflow: hidden;
 }
 
 /* main app */

@@ -19,6 +19,7 @@ export const NotifySlice = createSlice({
   reducers: {
     addNotify: (state, value) => {
       state.notifes.push(value.payload)
+      state.nextId++;
     }
   }
 })
