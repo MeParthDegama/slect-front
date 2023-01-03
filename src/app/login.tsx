@@ -17,7 +17,7 @@ const Login = () => {
                 <Input className="mb" type="text" placeholder="Username" icon={<i className="bi bi-person-fill"></i>} />
                 <Input className="mt" type="password" placeholder="Password" icon={<i className="bi bi-key-fill"></i>} />
                 <CheckBox id="login_checkbox" name="Remember Me" />
-                <Button name="Login" primary={true} />
+                <Button name="Login" primary={true} disabled={true} onClick={() => alert("123")} />
 
                 <div className="forgot-link">
                     <a href="https://google.com/">

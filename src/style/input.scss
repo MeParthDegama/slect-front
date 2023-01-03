@@ -76,7 +76,7 @@
             margin: auto 0;
         }
 
-        &.btn-square{
+        &.btn-square {
             padding: 0px;
             width: $btn-height;
         }
@@ -115,6 +115,12 @@
             margin: auto 0;
         }
 
+    }
+
+    &:disabled {
+        cursor: unset;
+        pointer-events: none;
+        opacity: .6;
     }
 
 }

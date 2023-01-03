@@ -3,11 +3,13 @@ import React from "react";
 type ButtonProp = {
     name: string,
     primary?: boolean,
+    onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined,
+    disabled?: boolean
 }
 
-const Button = ({ name, primary }: ButtonProp) => {
+const Button = ({ name, primary, onClick, disabled }: ButtonProp) => {
     return (
-        <button className={`btn btn-std ${primary ? "btn-primary" : ""}`}>
+        <button onClick={onClick} disabled={disabled} className={`btn btn-std ${primary ? "btn-primary" : ""}`}>
             {name}
         </button>
     )
@@ -17,12 +19,14 @@ type IconButtonProp = {
     name: string
     icon: JSX.Element
     ivc?: boolean,
-    active?: boolean
+    active?: boolean,
+    onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined,
+    disabled?: boolean
 }
 
-const IconButton = ({ name, icon, ivc, active }: IconButtonProp) => {
+const IconButton = ({ name, icon, ivc, active, onClick, disabled }: IconButtonProp) => {
     return (
-        <button className={`btn btn-icon ${ivc ? "ivc" : ""} ${active ? "active" : ""}`}>
+        <button onClick={onClick} disabled={disabled} className={`btn btn-icon ${ivc ? "ivc" : ""} ${active ? "active" : ""}`}>
             {icon}
             <span style={{ marginLeft: "8px" }}>{name}</span>
         </button>
@@ -32,23 +36,25 @@ const IconButton = ({ name, icon, ivc, active }: IconButtonProp) => {
 type IconButtonPropSquare = {
     icon: JSX.Element
     ivc?: boolean,
-    active?: boolean
-    onClick: React.MouseEventHandler<HTMLButtonElement> | undefined
+    active?: boolean,
+    onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined,
+    disabled?: boolean
 }
 
-const IconButtonSquare = ({ icon, ivc, active, onClick }: IconButtonPropSquare) => {
+const IconButtonSquare = ({ icon, ivc, active, onClick, disabled }: IconButtonPropSquare) => {
     return (
-        <button onClick={onClick} className={`btn btn-icon btn-square ${ivc ? "ivc" : ""} ${active ? "active" : ""}`}>
+        <button onClick={onClick} disabled={disabled} className={`btn btn-icon btn-square ${ivc ? "ivc" : ""} ${active ? "active" : ""}`}>
             {icon}
         </button>
     )
 }
 
 type ToggleButtonProp = {
-    iconLeft: JSX.Element
-    iconRight: JSX.Element
-    active?: boolean
+    iconLeft: JSX.Element,
+    iconRight: JSX.Element,
+    active?: boolean,
 }
+
 const ToogleButton = ({ iconLeft, iconRight, active }: ToggleButtonProp) => {
     return (
         <div className="btn btn-toggle">
