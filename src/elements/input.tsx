@@ -5,13 +5,15 @@ type InputProp = {
     placeholder?: string
     icon?: JSX.Element
     className?: string
+    onChange?: React.FormEventHandler<HTMLDivElement> | undefined,
+    name?: string
 }
 
-const Input = ({type, placeholder, icon, className}: InputProp) => {
+const Input = ({ type, placeholder, icon, className, onChange, name }: InputProp) => {
     return (
         <div className={`input ${icon ? "input-icon" : ""} ${className || ""}`}>
             {icon ? <div className="icon">{icon}</div> : ""}
-            <input type={type} placeholder={placeholder || ""} />
+            <input onChange={onChange} type={type} placeholder={placeholder || ""} name={name} />
         </div>
     )
 }
