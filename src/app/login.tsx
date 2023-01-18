@@ -4,9 +4,18 @@ import { Button } from "../elements/button";
 import { Input } from "../elements/input";
 import { useState } from "react";
 import OverLay from "../elements/overlay";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
 import API from "../conf/api";
+import { addNotify } from "../state/notifySlices";
+import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
 
 const Login = () => {
+
+    const dispatch = useAppDispatch()
+
+    const NewNotification = (title: string, des: string, status: NotifyBlockEnum) => {
+        dispatch(addNotify(<NotifyBlock title={title} des={des} status={status} />))
+    }
 
     let userHostName = "SmediaHost"
 
@@ -18,17 +27,30 @@ const Login = () => {
     }
 
     const login = (e: any) => {
-        setLoader(true)
+        setLoader(true) // set loader
 
         API.post(
             "/auth/",
             loginInfo,
         ).then(r => {
-            console.log(r);
-            setLoader(false)
+                
+            if (r.data.status) {
+                
+
+            } else {
+            
+                NewNotification("Login Error", r.data.message, NotifyBlockEnum.ERROR)
+            
+            }
+
+            setLoader(false) // unset loader 
+            
         }).catch(e => {
-            alert(e)
-            setLoader(false)
+
+            // any error
+            NewNotification("Server Error", "internal server error", NotifyBlockEnum.ERROR)
+            setLoader(false) // unset loader
+
         })
     }
 
