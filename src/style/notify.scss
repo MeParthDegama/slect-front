@@ -4,6 +4,7 @@
     left: 100%;
     z-index: 100;
     transform: translate(-100%, -100%);
+    padding: 0 1rem;
 
     .notification {
         width: 300px;
@@ -12,7 +13,7 @@
         overflow: hidden;
         background: $notification-background;
         position: relative;
-        margin: 1rem;
+        margin: 1rem 0;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
         animation: .5s ease notifaction_add;
@@ -63,8 +64,17 @@
             display: block;
         }
 
-        &.notifaction_remove{
+        &.notifaction_remove {
             animation: .5s ease notifaction_remove;
+        }
+
+    }
+
+    @media only screen and (max-width: 600px) {
+        width: 100%;
+
+        .notification {
+            width: 100%;
         }
     }
 
@@ -74,7 +84,7 @@
     0% {
         transform: translateX(100%);
     }
-    
+
     70% {
         transform: translateX(-10%);
     }
@@ -88,7 +98,7 @@
     0% {
         transform: translateX(0%);
     }
-    
+
     30% {
         transform: translateX(-10%);
     }
