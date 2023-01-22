@@ -1,0 +1,28 @@
+.loadline {
+    width: 100%;
+    height: 4px;
+    background-color: $btn-color;
+    position: relative;
+    overflow: hidden;
+
+    .line {
+        width: 10%;
+        height: 100%;
+        background-color: $primary-color;
+        animation: loadline 1.1s infinite;
+        position: absolute;
+    }
+
+}
+
+@keyframes loadline {
+    0% {
+        left: 0;
+        width: 10%;
+    }
+
+    100% {
+        width: 90%;
+        left: 100%;
+    }
+}

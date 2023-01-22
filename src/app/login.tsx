@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import CheckBox from "../elements/checkbox";
 import { Button } from "../elements/button";
 import { Input } from "../elements/input";
@@ -9,7 +9,8 @@ import API from "../conf/api";
 import { addNotify } from "../state/notifySlices";
 import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
 import Cookies from "universal-cookie";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import hostName from "../conf/hostName";
 
 const Login = () => {
 
@@ -19,8 +20,6 @@ const Login = () => {
     const NewNotification = (title: string, des: string, status: NotifyBlockEnum) => {
         dispatch(addNotify(<NotifyBlock title={title} des={des} status={status} />))
     }
-
-    let userHostName = "SmediaHost"
 
     let [loginInfo, setLoginInfo] = useState({ username: "", password: "" })
     let [remember, setRemember] = useState(false)
@@ -80,10 +79,30 @@ const Login = () => {
         })
     }
 
+    // check user is already login or not login
+    let authLock = useRef(false)
+
+    useEffect(() => {
+
+        // useEffect is execute two time than fix to use useRef
+        if (!authLock.current) {
+            authLock.current = true
+            return
+        }
+
+        let cookie = new Cookies()
+        let token = cookie.get("TOKEN")
+
+        if (token) {
+            navigate("/")
+        }
+
+    }, [])
+
     return (
         <div className="login">
             <h1 className="host-title">
-                {userHostName}
+                {hostName}
             </h1>
             <div className="login-box">
                 <OverLay show={loader} />

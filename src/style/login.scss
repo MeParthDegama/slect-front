@@ -4,6 +4,12 @@
         margin: 40px 80px;
         font-size: 2rem;
         font-weight: normal;
+
+        @media only screen and (max-width: 400px) {
+            margin: 40px 0;
+            padding: 0 1rem;
+            font-size: 1.75rem;
+        }
     }
 
     .login-box {
@@ -54,6 +60,16 @@
                 &:hover {
                     color: $primary-color;
                 }
+            }
+        }
+
+        @media only screen and (max-width: 400px) {
+            width: 100%;
+            padding: 1rem;
+            top: 50%;
+
+            .notification {
+                width: 100%;
             }
         }
     }
