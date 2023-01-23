@@ -12,7 +12,7 @@ const FilesHeader = () => {
             </div>
 
             <div className="file-btn">
-                <IconButton name="Upload" icon={<i className="bi bi-plus-lg"></i>} />
+                <IconButton name="Create Folder" icon={<i className="bi bi-plus-lg"></i>} />
                 <IconButton name="Upload" icon={<i className="bi bi-upload"></i>} />
                 <ToogleButton iconLeft={<i className="bi bi-grid-3x3-gap-fill"></i>} iconRight={<i className="bi bi-list-ul"></i>} active={false} />
             </div>
