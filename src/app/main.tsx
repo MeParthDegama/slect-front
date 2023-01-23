@@ -2,8 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { SideBar, SideBarExp } from "../components/sidebar";
+import API from "../conf/api";
 import hostName from "../conf/hostName";
 import LoadLine from "../elements/loadline";
+import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
+import { useAppDispatch } from "../state/hooks";
+import { addNotify } from "../state/notifySlices";
+import { setProfile } from "../state/ProfileSlices";
+import { setToken } from "../state/TokenSlices";
 import HomePage from "./home";
 import NotFound from "./notFound";
 
@@ -12,6 +18,12 @@ const MainApp = () => {
     let authLock = useRef(false)
     let [authComp, setAuthComp] = useState(false)
     const navigate = useNavigate()
+
+    const dispatch = useAppDispatch()
+
+    const NewNotification = (title: string, des: string, status: NotifyBlockEnum) => {
+        dispatch(addNotify(<NotifyBlock title={title} des={des} status={status} />))
+    }
 
     useEffect(() => {
 
@@ -31,9 +43,33 @@ const MainApp = () => {
         }
 
         // auth token
-        setTimeout(() => {
-            
-        }, 1000);
+        API.post(
+            "/profile/",
+            { token: token },
+        ).then(r => {
+            // if status is false
+            if (!r.data.status) {
+                cookie.remove("TOKEN") // remove token form cookie
+                navigate("/login") // redirect login
+                setToken("") // clear token
+                return
+            }
+
+            // if status is true
+            if (r.data.status) {
+                dispatch(setToken(token)) // set token
+                dispatch(setProfile({
+                    fullname: r.data.fullname,
+                    username: r.data.username,
+                })) // set user profile
+                setAuthComp(true) // than set aut complate 
+            }
+
+        }).catch(e => {
+            // any error
+            NewNotification("Server Error", "internal server error `" + e + "`", NotifyBlockEnum.ERROR)
+            navigate("/login") // redirect login
+        })
 
     }, [])
 

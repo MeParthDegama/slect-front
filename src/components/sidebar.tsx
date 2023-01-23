@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconButton } from "../elements/button";
 import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
@@ -8,6 +8,7 @@ import { addNotify } from "../state/notifySlices";
 const SideBar = () => {
 
     let sidebarWidth = useAppSelector(state => state.sidebarwidth.value)
+    let userProfile = useAppSelector(start => start.profile)
 
     const dispatch = useAppDispatch()
 
@@ -15,15 +16,14 @@ const SideBar = () => {
         dispatch(addNotify(<NotifyBlock title="Login Faild" des="Username or Password invalid" status={NotifyBlockEnum.ERROR} />))
     }
 
-
     return (
         <div className="side-bar" style={{ minWidth: sidebarWidth }}>
             <div className="user-btn">
                 <button className="btn btn-ivc" onClick={NewNotification}>
                     <img src={"/img/profile.jpg"} alt={"Robert Devid"} />
-                    <span>
-                        Robert Devid
-                    </span>
+                    <abbr title={userProfile.username}>
+                        {userProfile.fullname}
+                    </abbr>
                 </button>
             </div>
 
