@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { IconButton } from "../elements/button";
-import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
+import { setConnError } from "../state/connErrorSlices";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { change as changeWidth } from "../state/sidebarwidthSlices";
-import { addNotify } from "../state/notifySlices";
 
 const SideBar = () => {
 
@@ -12,14 +11,15 @@ const SideBar = () => {
 
     const dispatch = useAppDispatch()
 
-    const NewNotification = () => {
-        dispatch(addNotify(<NotifyBlock title="Login Faild" des="Username or Password invalid" status={NotifyBlockEnum.ERROR} />))
+    // tmp
+    const showConnError = () => {
+        dispatch(setConnError())
     }
 
     return (
         <div className="side-bar" style={{ minWidth: sidebarWidth }}>
             <div className="user-btn">
-                <button className="btn btn-ivc" onClick={NewNotification}>
+                <button className="btn btn-ivc" onClick={showConnError}>
                     <img src={"/img/profile.jpg"} alt={"Robert Devid"} />
                     <abbr title={userProfile.username}>
                         {userProfile.fullname}
@@ -62,12 +62,10 @@ const SideBarExp = () => {
     const [change, setChange] = useState(false);
 
     const mouseDown = () => {
-        console.log("down");
         setChange(true)
     }
 
     const mouseUp = () => {
-        console.log("up");
         setChange(false)
     }
 
@@ -75,8 +73,10 @@ const SideBarExp = () => {
         if (change) {
             if (e.clientX <= 170) {
                 dispatch(changeWidth(170))
+                setChange(false)
             } else if (e.clientX >= 400) {
                 dispatch(changeWidth(400))
+                setChange(false)
             } else {
                 dispatch(changeWidth(e.clientX))
             }

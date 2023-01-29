@@ -4,9 +4,12 @@ import Cookies from "universal-cookie";
 import { SideBar, SideBarExp } from "../components/sidebar";
 import API from "../conf/api";
 import hostName from "../conf/hostName";
+import { Button } from "../elements/button";
 import LoadLine from "../elements/loadline";
+import Modal from "../elements/modal";
 import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
-import { useAppDispatch } from "../state/hooks";
+import { unSetConnError } from "../state/connErrorSlices";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { addNotify } from "../state/notifySlices";
 import { setProfile } from "../state/ProfileSlices";
 import { setToken } from "../state/TokenSlices";
@@ -71,7 +74,7 @@ const MainApp = () => {
             navigate("/login") // redirect login
         })
 
-    }, [])
+    })
 
     return authComp ? <AppMainPart /> : <AppAuthScreen />
 
@@ -94,8 +97,38 @@ const AppAuthScreen = () => {
 }
 
 const AppMainPart = () => {
+
+    const dispatch = useAppDispatch()
+
+    let connError = useAppSelector(value => value.connError.error)
+
+    const closeConnError = () => {
+        dispatch(unSetConnError())
+        setTimeout(() => {
+            window.location.reload()
+        }, 200);
+    }
+
     return (
-        <div className="app">
+        <div className="app" style={{
+            pointerEvents: connError ? "none" : "unset"
+        }}>
+
+            <Modal
+                title="Connection Error"
+                des="Please roload this window or report!"
+                show={connError}
+                onClick={closeConnError}
+
+                button={
+                    <Button
+                        name="Reload Window"
+                        primary={true}
+                        onClick={closeConnError}
+                    />
+                }
+            />
+
             <SideBar />
             <SideBarExp />
             <div className="main-con">

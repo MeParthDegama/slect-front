@@ -4,6 +4,7 @@ import notifySlices from "./notifySlices"
 import profileSlices from "./ProfileSlices"
 import sidebarwidthSlices from "./sidebarwidthSlices"
 import tokenSlices from "./TokenSlices"
+import connErrorSlices from "./connErrorSlices"
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         sidebarwidth: sidebarwidthSlices,
         notify: notifySlices,
         profile: profileSlices,
-        token: tokenSlices
+        token: tokenSlices,
+        connError: connErrorSlices
     }
 })
 

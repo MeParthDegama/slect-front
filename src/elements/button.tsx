@@ -16,17 +16,18 @@ const Button = ({ name, primary, onClick, disabled }: ButtonProp) => {
 }
 
 type IconButtonProp = {
-    name: string
-    icon: JSX.Element
+    name: string,
+    icon: JSX.Element,
+    primary?: boolean,
     ivc?: boolean,
     active?: boolean,
     onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined,
     disabled?: boolean
 }
 
-const IconButton = ({ name, icon, ivc, active, onClick, disabled }: IconButtonProp) => {
+const IconButton = ({ name, icon, ivc, active, onClick, disabled, primary }: IconButtonProp) => {
     return (
-        <button onClick={onClick} disabled={disabled} className={`btn btn-icon ${ivc ? "ivc" : ""} ${active ? "active" : ""}`}>
+        <button onClick={onClick} disabled={disabled} className={`btn btn-icon ${ivc ? "ivc" : ""} ${active ? "active" : ""} ${primary ? "btn-primary" : ""}`}>
             {icon}
             <span style={{ marginLeft: "8px" }}>{name}</span>
         </button>
