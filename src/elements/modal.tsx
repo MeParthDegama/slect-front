@@ -11,7 +11,7 @@ type ModalProp = {
 
 const Modal = ({ title, des, button, show, onClose }: ModalProp) => {
     return (
-        <div className={`ws-error modal ${show ? "show" : ""}`} style={{ pointerEvents: "all" }}>
+        <div className={`modal ${show ? "show" : ""}`}>
             <div className="close-button">
                 <IconButtonSquare ivc={true} icon={<i className="bi bi-x-lg"></i>} onClick={onClose} />
             </div>
