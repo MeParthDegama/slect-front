@@ -1,68 +1,77 @@
-.modal {
+.modal-wrap {
     position: absolute;
-    background: $modal-background;
-    box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.02), 0 0px 20px 0 rgba(0, 0, 0, 0.02);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1.1);
-    width: 450px;
-    min-height: 100px;
-    border-radius: $radius;
-    padding: 10px 15px;
-    transition: .1s;
-    opacity: 0;
+    height: 100vh;
+    width: 100vw;
     pointer-events: none;
 
-    &.show {
-        display: unset !important;
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-        pointer-events: all !important;
-    }
-
-    .title {
-        font-size: 1.75rem;
-        font-weight: normal;
-        display: block;
-    }
-
-    .des {
-        margin: 5px 0;
-        color: $icon-color;
-        font-size: 1.1rem;
-        display: block;
-    }
-
-    .close-button {
+    .modal {
         position: absolute;
-        top: 0;
-        right: 0;
-        margin: 5px 10px;
+        background: $modal-background;
+        box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.02), 0 0px 20px 0 rgba(0, 0, 0, 0.02);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1.1);
+        width: 450px;
+        min-height: 100px;
+        border-radius: $radius;
+        padding: 10px 15px;
+        transition: .1s;
+        opacity: 0;
 
-        button i {
-            margin: auto;
+        .title {
+            font-size: 1.75rem;
+            font-weight: normal;
+            display: block;
         }
 
-    }
+        .des {
+            margin: 5px 0;
+            color: $icon-color;
+            font-size: 1.1rem;
+            display: block;
+        }
 
-    .btns {
-        display: flex;
+        .close-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 5px 10px;
 
-        button {
-            margin: 0 !important;
-            margin-top: 10px !important;
-            margin-bottom: 5px !important;
-            margin-left: 10px !important;
-
-            &:first-child {
-                margin-left: auto !important;
+            button i {
+                margin: auto;
             }
 
         }
 
+        .btns {
+            display: flex;
+
+            button {
+                margin: 0 !important;
+                margin-top: 10px !important;
+                margin-bottom: 5px !important;
+                margin-left: 10px !important;
+
+                &:first-child {
+                    margin-left: auto !important;
+                }
+
+            }
+
+        }
+
+        @media only screen and (max-width: 500px) {
+            width: 90%;
+        }
     }
 
-    @media only screen and (max-width: 500px) {
-        width: 90%;
+    &.show {
+        pointer-events: all !important;
+
+        .modal {
+            display: unset !important;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
     }
 }

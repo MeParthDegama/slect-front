@@ -1,23 +1,68 @@
-import React, {  useState } from "react";
-import { IconButton } from "../elements/button";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+import { Button, IconButton } from "../elements/button";
+import Modal from "../elements/modal";
+import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
 import { setConnError } from "../state/connErrorSlices";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
+import { addNotify } from "../state/notifySlices";
 import { change as changeWidth } from "../state/sidebarwidthSlices";
+import { setToken } from "../state/TokenSlices";
 
 const SideBar = () => {
 
-    let sidebarWidth = useAppSelector(state => state.sidebarwidth.value)
-    let userProfile = useAppSelector(start => start.profile)
-
     const dispatch = useAppDispatch()
+
+    let sidebarWidth = useAppSelector(state => state.sidebarwidth.value)
+    let userProfile = useAppSelector(state => state.profile)
+
+    let navigate = useNavigate()
+
+    let [showLogout, setLogout] = useState(false)
+
+    const cookie = new Cookies()
 
     // tmp
     const showConnError = () => {
         dispatch(setConnError())
     }
 
+    const logOut = () => {
+        dispatch(setToken("")) //clear token
+        cookie.remove("TOKEN") // remove token form cookie
+        setLogout(false)
+        setTimeout(() => {
+            navigate("/")
+            dispatch(addNotify(<NotifyBlock title={"Logout Successful"} des={`User \`${userProfile.username}\` logout successful.`} status={NotifyBlockEnum.SUCCESS} />))
+        }, 200);
+    }
+
     return (
         <div className="side-bar" style={{ minWidth: sidebarWidth }}>
+
+            {/* logout modal */}
+            <Modal
+                title="Logout"
+                des="Are you sure Logout."
+                show={showLogout}
+                onClose={() => setLogout(false)}
+
+                button={
+                    <>
+                        <Button
+                            name="Close"
+                            onClick={() => setLogout(false)}
+                        />
+                        <Button
+                            name="Yes, Logout"
+                            primary={true}
+                            onClick={logOut}
+                        />
+                    </>
+                }
+            />
+
             <div className="user-btn">
                 <button className="btn btn-ivc" onClick={showConnError}>
                     <img src={"/img/profile.jpg"} alt={"Robert Devid"} />
@@ -47,7 +92,7 @@ const SideBar = () => {
             </div>
 
             <div className="setting-nav">
-                <IconButton ivc={true} active={false} name="Settings" icon={<i className="bi bi-gear-fill"></i>} />
+                <IconButton ivc={true} active={false} name="Logout" onClick={() => setLogout(true)} icon={<i className="bi bi-box-arrow-left"></i>} />
             </div>
 
         </div>
