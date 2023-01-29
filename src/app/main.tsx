@@ -118,7 +118,7 @@ const AppMainPart = () => {
                 title="Connection Error"
                 des="Please roload this window or report!"
                 show={connError}
-                onClick={closeConnError}
+                onClose={closeConnError}
 
                 button={
                     <Button
