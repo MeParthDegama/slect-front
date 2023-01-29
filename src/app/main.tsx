@@ -54,7 +54,7 @@ const MainApp = () => {
             if (!r.data.status) {
                 cookie.remove("TOKEN") // remove token form cookie
                 navigate("/login") // redirect login
-                setToken("") // clear token
+                dispatch(setToken("")) // clear token
                 return
             }
 
@@ -110,9 +110,7 @@ const AppMainPart = () => {
     }
 
     return (
-        <div className="app" style={{
-            pointerEvents: connError ? "none" : "unset"
-        }}>
+        <div className="app">
 
             <Modal
                 title="Connection Error"
