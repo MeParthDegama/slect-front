@@ -4,7 +4,7 @@ import { Button } from "../elements/button";
 import { Input } from "../elements/input";
 import { useState } from "react";
 import OverLay from "../elements/overlay";
-import { useAppDispatch, useAppSelector } from "../state/hooks";
+import { useAppDispatch } from "../state/hooks";
 import API from "../conf/api";
 import { addNotify } from "../state/notifySlices";
 import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
@@ -59,7 +59,7 @@ const Login = () => {
 
             if (r.data.status) {
 
-                NewNotification("Login Successful", r.data.token, NotifyBlockEnum.SUCCESS)
+                NewNotification("Login Successful", `User \`${loginInfo.username}\` login successful.`, NotifyBlockEnum.SUCCESS)
                 const cookies = new Cookies();
                 cookies.set('TOKEN', r.data.token, remember ? { path: '/', maxAge: new Date().getTime() + (5 * 24 * 60 * 60 * 1000) } : { path: '/' });
                 navigate("/")
@@ -97,7 +97,7 @@ const Login = () => {
             navigate("/")
         }
 
-    }, [])
+    })
 
     return (
         <div className="login">
