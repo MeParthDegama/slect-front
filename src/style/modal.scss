@@ -5,6 +5,7 @@
     pointer-events: none;
     background: transparent;
     transition: .1s;
+    z-index: 999999999999999999999999;
 
     .modal {
         position: absolute;
