@@ -3,31 +3,41 @@ import FileFooter from "../components/filesFooter";
 import FilesHeader from "../components/filesHeader";
 import { FileItem, FileItemSpace } from "../components/filesList";
 import API from "../conf/api";
-import { useAppSelector } from "../state/hooks";
+import { useAppDispatch, useAppSelector } from "../state/hooks";
+import { setConnError } from "../state/connErrorSlices";
 
 const HomePage = () => {
+
+    const dispatch = useAppDispatch()
 
     let token = useAppSelector(s => s.token.token)
     let [fileList, setFileList] = useState([{ name: "!~!~", isdir: false }])
     let [fileIsLoad, setFileIsLoad] = useState(true)
 
-    const loadFiles = () => {
+    let [currPath, setCurrPath] = useState("")
+
+    const loadFiles = (path: string) => {
+
         setFileIsLoad(true)
         API.post(
             "/files/", {
-            token: token
+            token: token,
+            path: currPath + "/" + path
         }).then(r => {
 
             if (r.data.status) {
                 setFileList(r.data.filelist)
                 setFileIsLoad(false)
             } else {
-
+                dispatch(setConnError())
             }
 
-        }).catch(e => {
+            setCurrPath(currPath + "/" + path)
 
+        }).catch(e => {
+            dispatch(setConnError())
         })
+
     }
 
     // file load effect lock
@@ -38,12 +48,12 @@ const HomePage = () => {
             fileLoadLock.current = true
             return
         }
-        loadFiles()
+        loadFiles("")
     }, [])
 
     return (
         <div className="files-con">
-            <FilesHeader />
+            <FilesHeader path={currPath} />
             <div className="files-con-main">
                 {(() => {
                     if (fileIsLoad) {
@@ -55,7 +65,7 @@ const HomePage = () => {
                             </div>
                         )
                     }
-                    if (fileList.length === 1 && fileList[0]["name"] === "!~!~") {
+                    if (fileList.length === 0 || (fileList.length === 1 && fileList[0]["name"] === "!~!~")) {
                         return (
                             <div className="empty-dir">
                                 <div>
@@ -70,7 +80,13 @@ const HomePage = () => {
                         <div className="files-list">
                             {fileList.map(e => {
                                 if (!e["name"].startsWith(".")) {
-                                    return <FileItem name={e["name"]} icon={e["isdir"] ? "folder" : "file"} />
+                                    return <FileItem name={e["name"]} icon={e["isdir"] ? "folder" : "file"}
+                                        onClick={() => {
+                                            if (e["isdir"]) {
+                                                loadFiles(e["name"])
+                                            }
+                                        }
+                                        } />
                                 } return null
                             })}
                             {(() => {

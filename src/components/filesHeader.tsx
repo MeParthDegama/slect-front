@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, IconButton, ToogleButton } from "../elements/button";
 
-const FilesHeader = () => {
+type FilesHeaderProp = {
+    path: string
+}
+
+const FilesHeader = ({ path }: FilesHeaderProp) => {
+    
     return (
         <div className="file-header">
             <div className="file-path">
                 <button className="path-button btn btn-ivc">Home</button>
-                <i className="path-arrow bi bi-chevron-right"></i>
-                <button className="path-button btn btn-ivc">Projects</button>
+                {path.split("/").map(e => {
+                    if (e == "") return;
+                    
+                    return (
+                        <>
+                            <i className="path-arrow bi bi-chevron-right"></i>
+                            <button className="path-button btn btn-ivc">{e}</button>
+                        </>
+                    )
+                })}
                 <i className="path-fav bi bi-star"></i>
             </div>
 
