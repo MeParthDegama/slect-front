@@ -5,11 +5,13 @@ type FileProp = {
     name: string
     active?: boolean
     onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
+    onMouseEnter?: React.MouseEventHandler<HTMLDivElement> | undefined
+    onMouseLeave?: React.MouseEventHandler<HTMLDivElement> | undefined
 }
 
-const FileItem = ({ icon, name, active, onClick }: FileProp) => {
+const FileItem = ({ icon, name, active, onClick, onMouseEnter, onMouseLeave }: FileProp) => {
     return (
-        <div className={`file-item ${active ? "active" : ""}`} onClick={onClick}>
+        <div className={`file-item ${active ? "active" : ""}`} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <div className="icon" style={{ backgroundImage: `url(/assets/${icon}.svg)` }}>
 
             </div>

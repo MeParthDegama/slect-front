@@ -1,23 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, IconButton, ToogleButton } from "../elements/button";
 
 type FilesHeaderProp = {
     path: string
+    setFilesCB: (path: string) => void
 }
 
-const FilesHeader = ({ path }: FilesHeaderProp) => {
-    
+const FilesHeader = ({ path, setFilesCB }: FilesHeaderProp) => {
+
+    let [pwdPath, setPwdPath] = useState([""])
+
+    useEffect(() => {
+        setPwdPath(path.split("/"))
+    }, [path])
+
     return (
         <div className="file-header">
             <div className="file-path">
-                <button className="path-button btn btn-ivc">Home</button>
-                {path.split("/").map(e => {
+                <button className="path-button btn btn-ivc" onClick={() => setFilesCB("/")}>Home</button>
+                {pwdPath.map((e, f) => {
                     if (e == "") return;
-                    
+
+                    let pwd = ""
+                    for (let i = 0; i <= f; i++) {
+                        if (pwdPath[i] != "") {
+                            pwd += "/" + pwdPath[i]
+                        }
+                    }
+
                     return (
                         <>
                             <i className="path-arrow bi bi-chevron-right"></i>
-                            <button className="path-button btn btn-ivc">{e}</button>
+                            <button className="path-button btn btn-ivc" onClick={() => setFilesCB(pwd)}>{e}</button>
                         </>
                     )
                 })}

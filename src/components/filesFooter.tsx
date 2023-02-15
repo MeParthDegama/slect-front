@@ -1,10 +1,14 @@
 import React from "react";
 
-const FilesFooter = () => {
+type FilesFooterProp = {
+    des: string
+}
+
+const FilesFooter = ({ des }: FilesFooterProp) => {
     return (
         <div className="file-footer">
             <div>
-                server • ELF64 Executable • 43.7 kB
+                {des}
             </div>
         </div>
     )

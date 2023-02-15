@@ -5,44 +5,84 @@ import { FileItem, FileItemSpace } from "../components/filesList";
 import API from "../conf/api";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { setConnError } from "../state/connErrorSlices";
+import byteSize from "byte-size"
 
 const HomePage = () => {
 
     const dispatch = useAppDispatch()
 
     let token = useAppSelector(s => s.token.token)
-    let [fileList, setFileList] = useState([{ name: "!~!~", isdir: false }])
+    let [fileList, setFileList] = useState([{ name: "!~!~", isdir: false, size: 0 }])
     let [fileIsLoad, setFileIsLoad] = useState(true)
 
     let [currPath, setCurrPath] = useState("")
+    let [fileCount, setFileCount] = useState({ file: 0, dir: 0 })
+    let [footerText, setFooterText] = useState("")
+    let [dirIsEmpty, setDirIsEmpty] = useState(false)
 
     const loadFiles = (path: string) => {
+        let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
+        loadFilesPath(pathX)
+    }
 
+    const loadFilesPath = (path: string) => {
+        setDirIsEmpty(false)
         setFileIsLoad(true)
         API.post(
             "/files/", {
             token: token,
-            path: currPath + "/" + path
+            path: path
         }).then(r => {
 
             if (r.data.status) {
                 setFileList(r.data.filelist)
+                let fCount = 0
+                let dCount = 0
+                r.data.filelist.map((e: any) => {
+                    if (!e["name"].startsWith(".")) {
+                        if (e["isdir"]) {
+                            dCount++
+                        } else {
+                            fCount++
+                        }
+                    }
+                })
+                if (r.data.filelist.length === 0 || (r.data.filelist.length === 1 && r.data.filelist[0]["name"] === "!~!~") || (dCount === 0 && fCount === 0)) {
+                    setDirIsEmpty(true)
+                }
+                setFileCount({ dir: dCount, file: fCount })
                 setFileIsLoad(false)
+                setDirText(fCount, dCount)
             } else {
                 dispatch(setConnError())
             }
 
-            setCurrPath(currPath + "/" + path)
+            setCurrPath(path)
 
         }).catch(e => {
+            console.log(e);
+
             dispatch(setConnError())
         })
+    }
 
+    // set dir footer text
+    const setDirText = (fCount: number, dCount: number) => {
+        let fileCountDes = ""
+        if (fCount === 0 && dCount === 0) {
+            fileCountDes = "Empty Directory"
+        } else if (fCount !== 0 && dCount !== 0) {
+            fileCountDes = `${fCount} ${fCount > 1 ? `Files` : `File`} and ${dCount} ${dCount > 1 ? `Directories` : `Directory`}`
+        } else if (dCount === 0 && fCount !== 0) {
+            fileCountDes = `${fCount} ${fCount > 1 ? `Files` : `File`}`
+        } else if (dCount !== 0 && fCount === 0) {
+            fileCountDes = `${dCount} ${dCount > 1 ? `Directories` : `Directory`}`
+        }
+        setFooterText("123" + " • " + fileCountDes)
     }
 
     // file load effect lock
     let fileLoadLock = useRef(false)
-    let tmp1 = false
     useEffect(() => {
         if (!fileLoadLock.current) {
             fileLoadLock.current = true
@@ -53,7 +93,7 @@ const HomePage = () => {
 
     return (
         <div className="files-con">
-            <FilesHeader path={currPath} />
+            <FilesHeader path={currPath} setFilesCB={loadFilesPath} />
             <div className="files-con-main">
                 {(() => {
                     if (fileIsLoad) {
@@ -65,7 +105,7 @@ const HomePage = () => {
                             </div>
                         )
                     }
-                    if (fileList.length === 0 || (fileList.length === 1 && fileList[0]["name"] === "!~!~")) {
+                    if (dirIsEmpty) {
                         return (
                             <div className="empty-dir">
                                 <div>
@@ -80,14 +120,18 @@ const HomePage = () => {
                         <div className="files-list">
                             {fileList.map(e => {
                                 if (!e["name"].startsWith(".")) {
+                                    let size = byteSize(e["size"])
                                     return <FileItem name={e["name"]} icon={e["isdir"] ? "folder" : "file"}
                                         onClick={() => {
                                             if (e["isdir"]) {
                                                 loadFiles(e["name"])
                                             }
-                                        }
-                                        } />
-                                } return null
+                                        }}
+                                        onMouseEnter={() => setFooterText(`${e["name"]} • ${e["isdir"] ? `Directory` : `File • ${size.value} ${size.unit}`}`)}
+                                        onMouseLeave={() => setDirText(fileCount.file, fileCount.dir)}
+                                    />
+                                }
+                                return null
                             })}
                             {(() => {
                                 let fsa: JSX.Element[] = [];
@@ -100,7 +144,7 @@ const HomePage = () => {
                     )
                 })()}
             </div>
-            <FileFooter />
+            <FileFooter des={footerText} />
         </div>
     )
 }
