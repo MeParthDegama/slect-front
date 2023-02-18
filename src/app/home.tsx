@@ -25,6 +25,8 @@ const HomePage = () => {
         loadFilesPath(pathX)
     }
 
+    const reloadFiles = () => loadFiles(currPath)
+
     const loadFilesPath = (path: string) => {
         setDirIsEmpty(false)
         setFileIsLoad(true)
@@ -60,8 +62,6 @@ const HomePage = () => {
             setCurrPath(path)
 
         }).catch(e => {
-            console.log(e);
-
             dispatch(setConnError())
         })
     }
@@ -81,6 +81,30 @@ const HomePage = () => {
         setFooterText("123" + " • " + fileCountDes)
     }
 
+    const uploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let file = e.target.files && e.target.files[0]
+        if (!file) {
+            return
+        }
+        const fileUploadFormData = new FormData();
+        fileUploadFormData.append("token", token)
+        fileUploadFormData.append("base_path", "/")
+        fileUploadFormData.append("file", file)
+        API.post(
+            "/files/upload",
+            fileUploadFormData,
+            { headers: { "Content-Type": "multipart/form-data" }, }
+        ).then(r => {
+            if (r.data.status) {
+                reloadFiles()
+            } else {
+                dispatch(setConnError())
+            }
+        }).catch(e => {
+            dispatch(setConnError())
+        })
+    }
+
     // file load effect lock
     let fileLoadLock = useRef(false)
     useEffect(() => {
@@ -93,7 +117,7 @@ const HomePage = () => {
 
     return (
         <div className="files-con">
-            <FilesHeader path={currPath} setFilesCB={loadFilesPath} />
+            <FilesHeader path={currPath} setFilesCB={loadFilesPath} fileUploadEvent={uploadFile} />
             <div className="files-con-main">
                 {(() => {
                     if (fileIsLoad) {
