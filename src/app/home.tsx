@@ -54,7 +54,7 @@ const HomePage = () => {
                 }
                 setFileCount({ dir: dCount, file: fCount })
                 setFileIsLoad(false)
-                setDirText(fCount, dCount)
+                setDirText(fCount, dCount, path)
             } else {
                 dispatch(setConnError())
             }
@@ -67,7 +67,7 @@ const HomePage = () => {
     }
 
     // set dir footer text
-    const setDirText = (fCount: number, dCount: number) => {
+    const setDirText = (fCount: number, dCount: number, path: string) => {
         let fileCountDes = ""
         if (fCount === 0 && dCount === 0) {
             fileCountDes = "Empty Directory"
@@ -78,7 +78,11 @@ const HomePage = () => {
         } else if (dCount !== 0 && fCount === 0) {
             fileCountDes = `${dCount} ${dCount > 1 ? `Directories` : `Directory`}`
         }
-        setFooterText("123" + " • " + fileCountDes)
+
+        let cwdPath = path.split('/')
+        console.log(cwdPath)
+
+        setFooterText(cwdPath[cwdPath.length - 1] + " • " + fileCountDes)
     }
 
     const uploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,7 +156,7 @@ const HomePage = () => {
                                             }
                                         }}
                                         onMouseEnter={() => setFooterText(`${e["name"]} • ${e["isdir"] ? `Directory` : `File • ${size.value} ${size.unit}`}`)}
-                                        onMouseLeave={() => setDirText(fileCount.file, fileCount.dir)}
+                                        onMouseLeave={() => setDirText(fileCount.file, fileCount.dir, currPath)}
                                     />
                                 }
                                 return null
