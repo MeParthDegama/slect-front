@@ -5,13 +5,15 @@ import { IconInputFile } from "../elements/input";
 type FilesHeaderProp = {
     path: string
     setFilesCB: (path: string) => void
+    changeLayout: (lineview: boolean) => void
     fileUploadEvent: React.ChangeEventHandler<HTMLInputElement>
     newDirEvent: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent }: FilesHeaderProp) => {
+const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLayout }: FilesHeaderProp) => {
 
     let [pwdPath, setPwdPath] = useState([""])
+    let [lineView, setLineView] = useState(false)
 
     useEffect(() => {
         setPwdPath(path.split("/"))
@@ -44,7 +46,15 @@ const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent }: FilesHe
             <div className="file-btn">
                 <IconButton name="Create Folder" icon={<i className="bi bi-plus-lg"></i>} onClick={newDirEvent} />
                 <IconInputFile name="Upload" icon={<i className="bi bi-upload"></i>} onChange={fileUploadEvent} />
-                <ToogleButton iconLeft={<i className="bi bi-grid-3x3-gap-fill"></i>} iconRight={<i className="bi bi-list-ul"></i>} active={false} />
+                <ToogleButton
+                    iconLeft={<i className="bi bi-grid-3x3-gap-fill"></i>}
+                    iconRight={<i className="bi bi-list-ul"></i>}
+                    active={lineView}
+                    onClick={() => {
+                        changeLayout(!lineView)
+                        setLineView(!lineView)
+                    }}
+                />
             </div>
         </div>
     )

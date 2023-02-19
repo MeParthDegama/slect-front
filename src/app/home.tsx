@@ -14,6 +14,8 @@ const HomePage = () => {
 
     const dispatch = useAppDispatch()
 
+    let [fileLineView, setFileLineView] = useState(false)
+
     let token = useAppSelector(s => s.token.token)
     let [fileList, setFileList] = useState([{ name: "!~!~", isdir: false, size: 0 }])
     let [fileIsLoad, setFileIsLoad] = useState(true)
@@ -182,6 +184,9 @@ const HomePage = () => {
                     setnewDirModal(true)
                     setNewDirErr("")
                 }}
+                changeLayout={(setLineView) => {
+                    setFileLineView(setLineView)
+                }}
             />
             <div className="files-con-main">
                 {(() => {
@@ -206,7 +211,7 @@ const HomePage = () => {
                         )
                     }
                     return (
-                        <div className="files-list">
+                        <div className={`files-list ${fileLineView && `line-view`}`}>
                             {fileList.map(e => {
                                 if (!e["name"].startsWith(".")) {
                                     let size = byteSize(e["size"])
@@ -222,7 +227,7 @@ const HomePage = () => {
                                 }
                                 return null
                             })}
-                            {(() => {
+                            {!fileLineView && (() => {
                                 let fsa: JSX.Element[] = [];
                                 for (let i = 0; i < 15; i++) {
                                     fsa.push(<FileItemSpace />);

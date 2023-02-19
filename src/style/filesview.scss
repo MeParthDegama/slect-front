@@ -183,6 +183,38 @@
             }
         }
     }
+
+    &.line-view {
+
+    margin: 10px 0px;
+        display: block;
+
+        .file-item {
+            display: flex;
+            flex-direction: row;
+            width: auto;
+            height: 75px;
+            padding: 8px 14px;
+            border-radius: $radius;
+
+            .icon {
+                width: 59px;
+                height: 100%;
+            }
+
+            span {
+                margin: auto 1.2rem;
+            }
+
+            &:hover {
+                background: $btn-color !important;
+
+                span {
+                    background: transparent !important;
+                }
+            }
+        }
+    }
 }
 
 @-webkit-keyframes spinnerLoad {

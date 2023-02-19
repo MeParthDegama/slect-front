@@ -54,11 +54,12 @@ type ToggleButtonProp = {
     iconLeft: JSX.Element,
     iconRight: JSX.Element,
     active?: boolean,
+    onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
 }
 
-const ToogleButton = ({ iconLeft, iconRight, active }: ToggleButtonProp) => {
+const ToogleButton = ({ iconLeft, iconRight, active, onClick }: ToggleButtonProp) => {
     return (
-        <div className="btn btn-toggle">
+        <div className="btn btn-toggle" onClick={onClick}>
             <div className={`btn-active ${active ? "active-right" : ""}`}>
 
             </div>
