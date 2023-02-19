@@ -29,7 +29,9 @@ const HomePage = () => {
     let [newDirName, setNewDirName] = useState("")
     let [newDirErr, setNewDirErr] = useState("")
 
-    let [hideConMenu, setHeidConMenu] = useState(true)
+    let [conMenuPorp, setConMenuPorp] = useState({ top: 0, left: 0, display: "none", transform: "" })
+    let [activeMenuFile, setActiveMenuFile] = useState({ name: "!~!~", isdir: false, size: 0 })
+
 
     const loadFiles = (path: string) => {
         let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
@@ -165,6 +167,16 @@ const HomePage = () => {
 
     }
 
+    const fileContextMenu = (e: any, filename: any) => {
+        setActiveMenuFile(filename)
+        setConMenuPorp({
+            top: e.clientY,
+            left: e.clientX,
+            display: "block",
+            transform: `translate(-${window.innerWidth < e.clientX + 200 ? "100" : "0"}%, -${window.innerHeight < e.clientY + 120 ? "100" : "0"}%)`,
+        })
+    }
+
     // file load effect lock
     let fileLoadLock = useRef(false)
     useEffect(() => {
@@ -176,7 +188,11 @@ const HomePage = () => {
     }, [])
 
     return (
-        <div className="files-con">
+        <div
+            className="files-con"
+            onClick={() => setConMenuPorp({ top: 0, left: 0, display: "none", transform: "" })}
+            onContextMenu={() => conMenuPorp.display == "block" && setConMenuPorp({ top: 0, left: 0, display: "none", transform: "" })}
+        >
             <FilesHeader
                 path={currPath}
                 setFilesCB={loadFilesPath}
@@ -214,23 +230,32 @@ const HomePage = () => {
                     }
                     return (
                         <div>
-                            <div className="context-menu">
-                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
-                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
-                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
-                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
-                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
+
+                            <div className="context-menu" style={conMenuPorp}>
+                                <IconButton
+                                    ivc={true}
+                                    active={false}
+                                    name="Open"
+                                    icon={<i className="bi bi-box-arrow-up-right"></i>}
+                                    onClick={() => { activeMenuFile["isdir"] && loadFiles(activeMenuFile["name"]) }}
+                                />
+                                <IconButton
+                                    ivc={true}
+                                    active={false}
+                                    name="Rename"
+                                    icon={<i className="bi bi-pencil-square"></i>}
+                                />
                             </div>
-                            <div className={`files-list ${fileLineView && `line-view`}`} onClick={() => alert(13)}>
+
+                            <div className={`files-list ${fileLineView && `line-view`}`}>
                                 {fileList.map(e => {
                                     if (!e["name"].startsWith(".")) {
                                         let size = byteSize(e["size"])
-                                        return <FileItem name={e["name"]} icon={e["isdir"] ? "folder" : "file"}
-                                            onClick={() => {
-                                                if (e["isdir"]) {
-                                                    loadFiles(e["name"])
-                                                }
-                                            }}
+                                        return <FileItem
+                                            name={e["name"]}
+                                            icon={e["isdir"] ? "folder" : "file"}
+                                            onClick={() => e["isdir"] && loadFiles(e["name"])}
+                                            onContextMenu={(event) => fileContextMenu(event, e)}
                                             onMouseEnter={() => setFooterText(`${e["name"]} • ${e["isdir"] ? `Directory` : `File • ${size.value} ${size.unit}`}`)}
                                             onMouseLeave={() => setDirText(fileCount.file, fileCount.dir, currPath)}
                                         />

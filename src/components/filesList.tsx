@@ -7,16 +7,12 @@ type FileProp = {
     onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
     onMouseEnter?: React.MouseEventHandler<HTMLDivElement> | undefined
     onMouseLeave?: React.MouseEventHandler<HTMLDivElement> | undefined
+    onContextMenu?: React.MouseEventHandler<HTMLDivElement> | undefined
 }
 
-const FileItem = ({ icon, name, active, onClick, onMouseEnter, onMouseLeave }: FileProp) => {
-
-    const showContextMenu = (e: any) => {
-        
-    }
-
+const FileItem = ({ icon, name, active, onClick, onMouseEnter, onMouseLeave, onContextMenu }: FileProp) => {
     return (
-        <div  onContextMenu={showContextMenu} className={`file-item ${active ? "active" : ""}`} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div onContextMenu={onContextMenu} className={`file-item ${active ? "active" : ""}`} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <div className="icon" style={{ backgroundImage: `url(/assets/${icon}.svg)` }}>
 
             </div>
