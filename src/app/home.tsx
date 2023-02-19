@@ -82,7 +82,7 @@ const HomePage = () => {
         let cwdPath = path.split('/')
         console.log(cwdPath)
 
-        setFooterText(cwdPath[cwdPath.length - 1] + " • " + fileCountDes)
+        setFooterText((cwdPath[cwdPath.length - 1] || "Home") + " • " + fileCountDes)
     }
 
     const uploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
