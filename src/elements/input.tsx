@@ -7,13 +7,14 @@ type InputProp = {
     className?: string
     onChange?: React.FormEventHandler<HTMLDivElement> | undefined,
     name?: string
+    value?: string | number | readonly string[] | undefined
 }
 
-const Input = ({ type, placeholder, icon, className, onChange, name }: InputProp) => {
+const Input = ({ type, placeholder, icon, className, onChange, name, value }: InputProp) => {
     return (
         <div className={`input ${icon ? "input-icon" : ""} ${className || ""}`}>
             {icon ? <div className="icon">{icon}</div> : ""}
-            <input onChange={onChange} type={type} placeholder={placeholder || ""} name={name} />
+            <input value={value} onChange={onChange} type={type} placeholder={placeholder || ""} name={name} />
         </div>
     )
 }

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {  IconButton, ToogleButton } from "../elements/button";
+import { IconButton, ToogleButton } from "../elements/button";
 import { IconInputFile } from "../elements/input";
 
 type FilesHeaderProp = {
     path: string
     setFilesCB: (path: string) => void
     fileUploadEvent: React.ChangeEventHandler<HTMLInputElement>
+    newDirEvent: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const FilesHeader = ({ path, setFilesCB, fileUploadEvent }: FilesHeaderProp) => {
+const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent }: FilesHeaderProp) => {
 
     let [pwdPath, setPwdPath] = useState([""])
 
@@ -41,7 +42,7 @@ const FilesHeader = ({ path, setFilesCB, fileUploadEvent }: FilesHeaderProp) => 
             </div>
 
             <div className="file-btn">
-                <IconButton name="Create Folder" icon={<i className="bi bi-plus-lg"></i>} />
+                <IconButton name="Create Folder" icon={<i className="bi bi-plus-lg"></i>} onClick={newDirEvent} />
                 <IconInputFile name="Upload" icon={<i className="bi bi-upload"></i>} onChange={fileUploadEvent} />
                 <ToogleButton iconLeft={<i className="bi bi-grid-3x3-gap-fill"></i>} iconRight={<i className="bi bi-list-ul"></i>} active={false} />
             </div>

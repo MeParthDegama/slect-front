@@ -6,6 +6,9 @@ import API from "../conf/api";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { setConnError } from "../state/connErrorSlices";
 import byteSize from "byte-size"
+import Modal from "../elements/modal";
+import { Input } from "../elements/input";
+import { Button } from "../elements/button";
 
 const HomePage = () => {
 
@@ -19,6 +22,10 @@ const HomePage = () => {
     let [fileCount, setFileCount] = useState({ file: 0, dir: 0 })
     let [footerText, setFooterText] = useState("")
     let [dirIsEmpty, setDirIsEmpty] = useState(false)
+
+    let [newDirModal, setnewDirModal] = useState(false)
+    let [newDirName, setNewDirName] = useState("")
+    let [newDirErr, setNewDirErr] = useState("")
 
     const loadFiles = (path: string) => {
         let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
@@ -80,7 +87,6 @@ const HomePage = () => {
         }
 
         let cwdPath = path.split('/')
-        console.log(cwdPath)
 
         setFooterText((cwdPath[cwdPath.length - 1] || "Home") + " • " + fileCountDes)
     }
@@ -109,6 +115,52 @@ const HomePage = () => {
         })
     }
 
+    const createNewDir = () => {
+        if (newDirName === "") {
+            setNewDirErr("Please enter folder name")
+            return
+        }
+
+        if (newDirName[0] === ".") {
+            setNewDirErr(`\`${newDirName}\` is system reserved name`)
+            return
+        }
+
+        let dirIsExist = false
+        fileList.map(e => {
+            if (e.name === newDirName) {
+                dirIsExist = true
+                setNewDirErr(`\`${newDirName}\` folder already exist`)
+                return
+            }
+        })
+        if (dirIsExist) return;
+
+        if (newDirName.match("/")) {
+            setNewDirErr(`\`/\`restricted character in folder name`)
+            return
+        }
+
+        API.post(
+            "/files/newdir", {
+            token: token,
+            dir_name: newDirName,
+            base_path: currPath
+        }).then(r => {
+            if (r.data.status) {
+                setnewDirModal(false)
+                reloadFiles()
+            } else {
+                dispatch(setConnError())
+            }
+        }).catch(e => {
+            dispatch(setConnError())
+        })
+
+        setNewDirErr("")
+
+    }
+
     // file load effect lock
     let fileLoadLock = useRef(false)
     useEffect(() => {
@@ -121,7 +173,16 @@ const HomePage = () => {
 
     return (
         <div className="files-con">
-            <FilesHeader path={currPath} setFilesCB={loadFilesPath} fileUploadEvent={uploadFile} />
+            <FilesHeader
+                path={currPath}
+                setFilesCB={loadFilesPath}
+                fileUploadEvent={uploadFile}
+                newDirEvent={() => {
+                    setNewDirName("");
+                    setnewDirModal(true)
+                    setNewDirErr("")
+                }}
+            />
             <div className="files-con-main">
                 {(() => {
                     if (fileIsLoad) {
@@ -173,6 +234,33 @@ const HomePage = () => {
                 })()}
             </div>
             <FileFooter des={footerText} />
+            <Modal show={newDirModal} title={"New Folder"} des={
+                <>
+                    <Input
+                        value={newDirName}
+                        className="m-0"
+                        type="text"
+                        placeholder="Folder Name"
+                        onChange={(e: any) => {
+                            setNewDirName(e.target.value)
+                            setNewDirErr("")
+                        }}
+                    />
+                    <span className="input-error" style={{ display: newDirErr != "" ? "block" : "none" }}>{newDirErr}</span>
+                </>
+            } button={
+                <>
+                    <Button
+                        name="Cancel"
+                        onClick={() => setnewDirModal(false)}
+                    />
+                    <Button
+                        name="Create"
+                        primary={true}
+                        onClick={createNewDir}
+                    />
+                </>
+            } onClose={() => setnewDirModal(false)} />
         </div>
     )
 }

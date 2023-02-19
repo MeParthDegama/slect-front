@@ -3,7 +3,7 @@ import { IconButtonSquare } from "./button";
 
 type ModalProp = {
     title: string,
-    des: string,
+    des: any,
     button: JSX.Element,
     show: boolean
     onClose?: React.MouseEventHandler<HTMLButtonElement>
@@ -11,7 +11,7 @@ type ModalProp = {
 
 const Modal = ({ title, des, button, show, onClose }: ModalProp) => {
     return (
-        <div className={`modal-wrap ${show ? "show" : ""}`}>
+        <div className={`modal-wrap ${show ? "show" : ""}`} style={{position: "absolute"}}>
             <div className="modal">
                 <div className="close-button">
                     <IconButtonSquare ivc={true} icon={<i className="bi bi-x-lg"></i>} onClick={onClose} />
