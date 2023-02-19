@@ -37,7 +37,7 @@ const FilesHeader = ({ path, setFilesCB, fileUploadEvent }: FilesHeaderProp) => 
                         </>
                     )
                 })}
-                <i className="path-fav bi bi-star"></i>
+                {/* <i className="path-fav bi bi-star"></i> */}
             </div>
 
             <div className="file-btn">

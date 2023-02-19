@@ -84,7 +84,7 @@ const SideBar = () => {
                 <IconButton ivc={true} active={false} name="Videos" icon={<i className="bi bi-play-circle-fill"></i>} />
                 <IconButton ivc={true} active={false} name="Documents" icon={<i className="bi bi-file-earmark-fill"></i>} />
                 <IconButton ivc={true} active={false} name="Git Repository" icon={<i className="bi bi-git"></i>} />
-                <IconButton ivc={true} active={false} name="Favorites" icon={<i className="bi bi-star-fill"></i>} />
+                {/* <IconButton ivc={true} active={false} name="Favorites" icon={<i className="bi bi-star-fill"></i>} /> */}
 
                 <span className="group-title">System</span>
                 <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
