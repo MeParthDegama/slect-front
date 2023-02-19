@@ -25,7 +25,7 @@ const HomePage = () => {
         loadFilesPath(pathX)
     }
 
-    const reloadFiles = () => loadFiles(currPath)
+    const reloadFiles = () => loadFilesPath(currPath)
 
     const loadFilesPath = (path: string) => {
         setDirIsEmpty(false)
@@ -88,7 +88,7 @@ const HomePage = () => {
         }
         const fileUploadFormData = new FormData();
         fileUploadFormData.append("token", token)
-        fileUploadFormData.append("base_path", "/")
+        fileUploadFormData.append("base_path", currPath)
         fileUploadFormData.append("file", file)
         API.post(
             "/files/upload",
