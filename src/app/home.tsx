@@ -8,7 +8,7 @@ import { setConnError } from "../state/connErrorSlices";
 import byteSize from "byte-size"
 import Modal from "../elements/modal";
 import { Input } from "../elements/input";
-import { Button } from "../elements/button";
+import { Button, IconButton } from "../elements/button";
 
 const HomePage = () => {
 
@@ -28,6 +28,8 @@ const HomePage = () => {
     let [newDirModal, setnewDirModal] = useState(false)
     let [newDirName, setNewDirName] = useState("")
     let [newDirErr, setNewDirErr] = useState("")
+
+    let [hideConMenu, setHeidConMenu] = useState(true)
 
     const loadFiles = (path: string) => {
         let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
@@ -211,29 +213,38 @@ const HomePage = () => {
                         )
                     }
                     return (
-                        <div className={`files-list ${fileLineView && `line-view`}`}>
-                            {fileList.map(e => {
-                                if (!e["name"].startsWith(".")) {
-                                    let size = byteSize(e["size"])
-                                    return <FileItem name={e["name"]} icon={e["isdir"] ? "folder" : "file"}
-                                        onClick={() => {
-                                            if (e["isdir"]) {
-                                                loadFiles(e["name"])
-                                            }
-                                        }}
-                                        onMouseEnter={() => setFooterText(`${e["name"]} • ${e["isdir"] ? `Directory` : `File • ${size.value} ${size.unit}`}`)}
-                                        onMouseLeave={() => setDirText(fileCount.file, fileCount.dir, currPath)}
-                                    />
-                                }
-                                return null
-                            })}
-                            {!fileLineView && (() => {
-                                let fsa: JSX.Element[] = [];
-                                for (let i = 0; i < 15; i++) {
-                                    fsa.push(<FileItemSpace />);
-                                }
-                                return fsa;
-                            })()}
+                        <div>
+                            <div className="context-menu">
+                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
+                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
+                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
+                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
+                                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
+                            </div>
+                            <div className={`files-list ${fileLineView && `line-view`}`} onClick={() => alert(13)}>
+                                {fileList.map(e => {
+                                    if (!e["name"].startsWith(".")) {
+                                        let size = byteSize(e["size"])
+                                        return <FileItem name={e["name"]} icon={e["isdir"] ? "folder" : "file"}
+                                            onClick={() => {
+                                                if (e["isdir"]) {
+                                                    loadFiles(e["name"])
+                                                }
+                                            }}
+                                            onMouseEnter={() => setFooterText(`${e["name"]} • ${e["isdir"] ? `Directory` : `File • ${size.value} ${size.unit}`}`)}
+                                            onMouseLeave={() => setDirText(fileCount.file, fileCount.dir, currPath)}
+                                        />
+                                    }
+                                    return null
+                                })}
+                                {!fileLineView && (() => {
+                                    let fsa: JSX.Element[] = [];
+                                    for (let i = 0; i < 15; i++) {
+                                        fsa.push(<FileItemSpace />);
+                                    }
+                                    return fsa;
+                                })()}
+                            </div>
                         </div>
                     )
                 })()}
@@ -251,7 +262,7 @@ const HomePage = () => {
                             setNewDirErr("")
                         }}
                     />
-                    <span className="input-error" style={{ display: newDirErr != "" ? "block" : "none" }}>{newDirErr}</span>
+                    <span className="input-error" style={{ display: newDirErr !== "" ? "block" : "none" }}>{newDirErr}</span>
                 </>
             } button={
                 <>

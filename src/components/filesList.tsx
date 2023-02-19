@@ -10,8 +10,13 @@ type FileProp = {
 }
 
 const FileItem = ({ icon, name, active, onClick, onMouseEnter, onMouseLeave }: FileProp) => {
+
+    const showContextMenu = (e: any) => {
+        
+    }
+
     return (
-        <div className={`file-item ${active ? "active" : ""}`} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div  onContextMenu={showContextMenu} className={`file-item ${active ? "active" : ""}`} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <div className="icon" style={{ backgroundImage: `url(/assets/${icon}.svg)` }}>
 
             </div>
