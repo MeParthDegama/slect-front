@@ -36,6 +36,7 @@ const HomePage = () => {
     let [renameFileName, setRenameFileName] = useState("")
     let [renameFileErr, setRenameFileErr] = useState("")
 
+    let [deleteFileModal, setDeleteFileModal] = useState(false)
 
     const loadFiles = (path: string) => {
         let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
@@ -228,6 +229,24 @@ const HomePage = () => {
 
     }
 
+    const deleteFile = () => {
+        API.post(
+            "/files/delete", {
+            token: token,
+            file_name: activeMenuFile.name,
+            base_path: currPath
+        }).then(r => {
+            if (r.data.status) {
+                setDeleteFileModal(false)
+                reloadFiles()
+            } else {
+                dispatch(setConnError())
+            }
+        }).catch(e => {
+            dispatch(setConnError())
+        })
+    }
+
     // file load effect lock
     let fileLoadLock = useRef(false)
     useEffect(() => {
@@ -299,6 +318,15 @@ const HomePage = () => {
                                         setRenameFileName(activeMenuFile.name)
                                         setViewReModal(true)
                                         setRenameFileErr("")
+                                    }}
+                                />
+                                <IconButton
+                                    ivc={true}
+                                    active={false}
+                                    name="Delete"
+                                    icon={<i className="bi bi-trash3-fill"></i>}
+                                    onClick={() => {
+                                        setDeleteFileModal(true)
                                     }}
                                 />
                             </div>
@@ -390,6 +418,25 @@ const HomePage = () => {
                     </>
                 }
                 onClose={() => setViewReModal(false)}
+            />
+            <Modal
+                show={deleteFileModal}
+                title={"Delete"}
+                des={`Are you sure to delete \`${activeMenuFile.name}\``}
+                button={
+                    <>
+                        <Button
+                            name="Cancel"
+                            onClick={() => setDeleteFileModal(false)}
+                        />
+                        <Button
+                            name="Delete"
+                            primary={true}
+                            onClick={() => deleteFile()}
+                        />
+                    </>
+                }
+                onClose={() => setDeleteFileModal(false)}
             />
         </div>
     )
