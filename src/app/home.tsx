@@ -32,6 +32,10 @@ const HomePage = () => {
     let [conMenuPorp, setConMenuPorp] = useState({ top: 0, left: 0, display: "none", transform: "" })
     let [activeMenuFile, setActiveMenuFile] = useState({ name: "!~!~", isdir: false, size: 0 })
 
+    let [viewReModal, setViewReModal] = useState(false)
+    let [renameFileName, setRenameFileName] = useState("")
+    let [renameFileErr, setRenameFileErr] = useState("")
+
 
     const loadFiles = (path: string) => {
         let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
@@ -177,6 +181,53 @@ const HomePage = () => {
         })
     }
 
+    const renameFile = () => {
+
+        if (renameFileName === "") {
+            setRenameFileErr("Please enter new name")
+            return
+        }
+
+        if (renameFileName[0] === ".") {
+            setRenameFileErr(`\`${renameFileName}\` is system reserved name`)
+            return
+        }
+
+        let dirIsExist = false
+        fileList.map(e => {
+            if (e.name === renameFileName) {
+                dirIsExist = true
+                setRenameFileErr(`\`${renameFileName}\` file or folder already exist`)
+                return
+            }
+        })
+        if (dirIsExist) return;
+
+        if (newDirName.match("/")) {
+            setRenameFileErr(`\`/\`restricted character in file or folder name`)
+            return
+        }
+
+        API.post(
+            "/files/rename", {
+            token: token,
+            old_file_name: activeMenuFile.name,
+            new_file_name: renameFileName,
+            base_path: currPath
+        }).then(r => {
+            if (r.data.status) {
+                setViewReModal(false)
+                reloadFiles()
+            } else {
+                dispatch(setConnError())
+            }
+            setRenameFileName("")
+        }).catch(e => {
+            dispatch(setConnError())
+        })
+
+    }
+
     // file load effect lock
     let fileLoadLock = useRef(false)
     useEffect(() => {
@@ -244,6 +295,11 @@ const HomePage = () => {
                                     active={false}
                                     name="Rename"
                                     icon={<i className="bi bi-pencil-square"></i>}
+                                    onClick={() => {
+                                        setRenameFileName(activeMenuFile.name)
+                                        setViewReModal(true)
+                                        setRenameFileErr("")
+                                    }}
                                 />
                             </div>
 
@@ -302,6 +358,39 @@ const HomePage = () => {
                     />
                 </>
             } onClose={() => setnewDirModal(false)} />
+            <Modal
+                show={viewReModal}
+                title={"Rename"}
+                des={
+                    <>
+                        <Input
+                            value={renameFileName}
+                            className="m-0"
+                            type="text"
+                            placeholder={activeMenuFile.name}
+                            onChange={(e: any) => {
+                                setRenameFileName(e.target.value)
+                                setRenameFileErr("")
+                            }}
+                        />
+                        <span className="input-error" style={{ display: renameFileErr !== "" ? "block" : "none" }}>{renameFileErr}</span>
+                    </>
+                }
+                button={
+                    <>
+                        <Button
+                            name="Cancel"
+                            onClick={() => setViewReModal(false)}
+                        />
+                        <Button
+                            name="Rename"
+                            primary={true}
+                            onClick={() => renameFile()}
+                        />
+                    </>
+                }
+                onClose={() => setViewReModal(false)}
+            />
         </div>
     )
 }
