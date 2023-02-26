@@ -77,14 +77,14 @@ const SideBar = () => {
             <div className="nav-bar">
                 <span className="group-title">File Manager</span>
                 <IconButton ivc={true} active={path === "/"} onClick={() => navigate("/")} name="Home" icon={<i className="bi bi-house-door-fill"></i>} />
-                <IconButton ivc={true} active={path === "/Recent"} name="Recent" icon={<i className="bi bi-arrow-counterclockwise"></i>} />
-                <IconButton ivc={true} active={path === "/share"} name="Shared Files" icon={<i className="bi bi-share-fill"></i>} />
-                <IconButton ivc={true} active={path === "/trash"} onClick={() => navigate("/trash")} name="Trash Bin" icon={<i className="bi bi-trash3-fill"></i>} />
+                <IconButton ivc={true} active={path.startsWith("/recent")} name="Recent" icon={<i className="bi bi-arrow-counterclockwise"></i>} />
+                <IconButton ivc={true} active={path.startsWith("/share")} name="Shared Files" icon={<i className="bi bi-share-fill"></i>} />
+                <IconButton ivc={true} active={path.startsWith("/trash")} onClick={() => navigate("/trash")} name="Trash Bin" icon={<i className="bi bi-trash3-fill"></i>} />
 
                 <span className="group-title">Libery</span>
-                <IconButton ivc={true} active={false} name="Images" icon={<i className="bi bi-image"></i>} />
-                <IconButton ivc={true} active={false} name="Videos" icon={<i className="bi bi-play-circle-fill"></i>} />
-                <IconButton ivc={true} active={false} name="Documents" icon={<i className="bi bi-file-earmark-fill"></i>} />
+                <IconButton ivc={true} active={path.startsWith("/pictures")} onClick={() => navigate("/pictures")} name="Pictures" icon={<i className="bi bi-image"></i>} />
+                <IconButton ivc={true} active={path.startsWith("/videos")} onClick={() => navigate("/videos")} name="Videos" icon={<i className="bi bi-play-circle-fill"></i>} />
+                <IconButton ivc={true} active={path.startsWith("/documents")} onClick={() => navigate("/documents")} name="Documents" icon={<i className="bi bi-file-earmark-fill"></i>} />
                 <IconButton ivc={true} active={false} name="Git Repository" icon={<i className="bi bi-git"></i>} />
                 {/* <IconButton ivc={true} active={false} name="Favorites" icon={<i className="bi bi-star-fill"></i>} /> */}
 

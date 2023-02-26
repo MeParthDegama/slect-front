@@ -10,9 +10,11 @@ import Modal from "../elements/modal";
 import { Input } from "../elements/input";
 import { Button, IconButton } from "../elements/button";
 import { current } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
 type HomePageProp = {
     thisTrash: boolean
+    initPath?: string
 }
 
 enum copyOrCut {
@@ -21,7 +23,9 @@ enum copyOrCut {
     Unknow
 }
 
-const HomePage = ({ thisTrash }: HomePageProp) => {
+const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
+
+    let navigate = useNavigate()
 
     const dispatch = useAppDispatch()
 
@@ -60,6 +64,13 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
     const reloadFiles = () => loadFilesPath(currPath)
 
     const loadFilesPath = (path: string) => {
+
+        ["/Pictures", "/Videos", "/Documents"].map((e) => {
+            if (path.startsWith(e)) {
+                navigate(e.toLowerCase())
+            }
+        })
+
         setDirIsEmpty(false)
         setFileIsLoad(true)
         API.post(
@@ -302,8 +313,8 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
             fileLoadLock.current = true
             return
         }
-        loadFilesPath(!thisTrash ? "/" : "/.delete")
-    }, [thisTrash])
+        loadFilesPath(!thisTrash ? (initPath || "/") : "/.delete")
+    }, [thisTrash, initPath])
 
     return (
         <div

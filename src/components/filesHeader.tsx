@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IconButton, ToogleButton } from "../elements/button";
 import { IconInputFile } from "../elements/input";
 
@@ -15,6 +16,8 @@ type FilesHeaderProp = {
 
 const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLayout, thisTrash, copyState, pasteFilesCB }: FilesHeaderProp) => {
 
+    let navigate = useNavigate()
+
     let [pwdPath, setPwdPath] = useState([""])
     let [lineView, setLineView] = useState(false)
 
@@ -25,7 +28,10 @@ const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLay
     return (
         <div className="file-header">
             <div className="file-path">
-                <button className="path-button btn btn-ivc" onClick={() => setFilesCB(!thisTrash ? "/" : "/.delete")}>{!thisTrash ? "Home" : "Trash"}</button>
+                <button className="path-button btn btn-ivc" onClick={() => {
+                    setFilesCB(!thisTrash ? "/" : "/.delete")
+                    navigate(!thisTrash ? "/" : "/trash")
+                }}>{!thisTrash ? "Home" : "Trash"}</button>
                 {pwdPath.map((e, f) => {
                     if ((e === "") || (e == ".delete" && thisTrash)) return <></>;
 

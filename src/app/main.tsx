@@ -130,9 +130,12 @@ const AppMainPart = () => {
             <SideBarExp />
             <div className="main-con">
                 <Routes>
-                    <Route path='/' element={<HomePage thisTrash={false} />} />
-                    <Route path='/trash' element={<HomePage thisTrash={true} />} />
+                    <Route path='/' element={<HomePage initPath={"/"} thisTrash={false} />} />
+                    <Route path='/trash' element={<HomePage initPath={"/.delete"} thisTrash={true} />} />
                     <Route path='/files' element={<HomePage thisTrash={false} />} />
+                    <Route path='/pictures' element={<HomePage initPath={"/Pictures"} thisTrash={false} />} />
+                    <Route path='/videos' element={<HomePage initPath={"/Videos"} thisTrash={false} />} />
+                    <Route path='/documents' element={<HomePage initPath={"/Documents"} thisTrash={false} />} />
                     <Route path='/*' element={<NotFound />} />
                 </Routes>
             </div>
