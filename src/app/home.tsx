@@ -10,7 +10,11 @@ import Modal from "../elements/modal";
 import { Input } from "../elements/input";
 import { Button, IconButton } from "../elements/button";
 
-const HomePage = () => {
+type HomePageProp = {
+    thisTrash: boolean
+}
+
+const HomePage = ({ thisTrash }: HomePageProp) => {
 
     const dispatch = useAppDispatch()
 
@@ -22,6 +26,7 @@ const HomePage = () => {
 
     let [currPath, setCurrPath] = useState("")
     let [fileCount, setFileCount] = useState({ file: 0, dir: 0 })
+
     let [footerText, setFooterText] = useState("")
     let [dirIsEmpty, setDirIsEmpty] = useState(false)
 
@@ -37,6 +42,8 @@ const HomePage = () => {
     let [renameFileErr, setRenameFileErr] = useState("")
 
     let [deleteFileModal, setDeleteFileModal] = useState(false)
+
+    let [copyFilePath, setCopyFilePath] = useState("")
 
     const loadFiles = (path: string) => {
         let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
@@ -99,7 +106,7 @@ const HomePage = () => {
 
         let cwdPath = path.split('/')
 
-        setFooterText((cwdPath[cwdPath.length - 1] || "Home") + " • " + fileCountDes)
+        setFooterText((thisTrash && cwdPath[cwdPath.length - 1] == ".delete" ? "Trash" : cwdPath[cwdPath.length - 1] || "Home") + " • " + fileCountDes)
     }
 
     const uploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,12 +236,23 @@ const HomePage = () => {
 
     }
 
+    const copyFile = () => {
+        console.log("prev:", copyFilePath);
+        console.log("curr:", `${currPath}/${activeMenuFile.name}`)
+        setCopyFilePath(`${currPath}/${activeMenuFile.name}`)
+    }
+
+    const cutFile = () => {
+
+    }
+
     const deleteFile = () => {
         API.post(
             "/files/delete", {
             token: token,
             file_name: activeMenuFile.name,
-            base_path: currPath
+            base_path: currPath,
+            permanent: thisTrash,
         }).then(r => {
             if (r.data.status) {
                 setDeleteFileModal(false)
@@ -254,8 +272,8 @@ const HomePage = () => {
             fileLoadLock.current = true
             return
         }
-        loadFiles("")
-    }, [])
+        loadFilesPath(!thisTrash ? "" : "/.delete")
+    }, [thisTrash])
 
     return (
         <div
@@ -264,6 +282,8 @@ const HomePage = () => {
             onContextMenu={() => conMenuPorp.display == "block" && setConMenuPorp({ top: 0, left: 0, display: "none", transform: "" })}
         >
             <FilesHeader
+                copyState={copyFilePath != ""}
+                thisTrash={thisTrash}
                 path={currPath}
                 setFilesCB={loadFilesPath}
                 fileUploadEvent={uploadFile}
@@ -309,15 +329,37 @@ const HomePage = () => {
                                     icon={<i className="bi bi-box-arrow-up-right"></i>}
                                     onClick={() => { activeMenuFile["isdir"] && loadFiles(activeMenuFile["name"]) }}
                                 />
+                                {!thisTrash &&
+                                    <>
+                                        <IconButton
+                                            ivc={true}
+                                            active={false}
+                                            name="Rename"
+                                            icon={<i className="bi bi-pencil-square"></i>}
+                                            onClick={() => {
+                                                setRenameFileName(activeMenuFile.name)
+                                                setViewReModal(true)
+                                                setRenameFileErr("")
+                                            }}
+                                        />
+                                        <IconButton
+                                            ivc={true}
+                                            active={false}
+                                            name="Copy"
+                                            icon={<i className="bi bi-clipboard"></i>}
+                                            onClick={() => {
+                                                copyFile()
+                                            }}
+                                        />
+                                    </>
+                                }
                                 <IconButton
                                     ivc={true}
                                     active={false}
-                                    name="Rename"
-                                    icon={<i className="bi bi-pencil-square"></i>}
+                                    name="Cut"
+                                    icon={<i className="bi bi-scissors"></i>}
                                     onClick={() => {
-                                        setRenameFileName(activeMenuFile.name)
-                                        setViewReModal(true)
-                                        setRenameFileErr("")
+                                        cutFile()
                                     }}
                                 />
                                 <IconButton
@@ -423,7 +465,7 @@ const HomePage = () => {
             <Modal
                 show={deleteFileModal}
                 title={"Delete"}
-                des={`Are you sure to delete \`${activeMenuFile.name}\``}
+                des={`Are you sure to ${thisTrash ? "permanent": ""} delete \`${activeMenuFile.name}\``}
                 button={
                     <>
                         <Button

@@ -3,6 +3,8 @@ import { IconButton, ToogleButton } from "../elements/button";
 import { IconInputFile } from "../elements/input";
 
 type FilesHeaderProp = {
+    copyState: boolean
+    thisTrash: boolean
     path: string
     setFilesCB: (path: string) => void
     changeLayout: (lineview: boolean) => void
@@ -10,7 +12,7 @@ type FilesHeaderProp = {
     newDirEvent: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLayout }: FilesHeaderProp) => {
+const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLayout, thisTrash, copyState }: FilesHeaderProp) => {
 
     let [pwdPath, setPwdPath] = useState([""])
     let [lineView, setLineView] = useState(false)
@@ -22,9 +24,9 @@ const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLay
     return (
         <div className="file-header">
             <div className="file-path">
-                <button className="path-button btn btn-ivc" onClick={() => setFilesCB("/")}>Home</button>
+                <button className="path-button btn btn-ivc" onClick={() => setFilesCB(!thisTrash ? "/" : "/.delete")}>{!thisTrash ? "Home" : "Trash"}</button>
                 {pwdPath.map((e, f) => {
-                    if (e === "") return <></>;
+                    if ((e === "") || (e == ".delete" && thisTrash)) return <></>;
 
                     let pwd = ""
                     for (let i = 0; i <= f; i++) {
@@ -44,8 +46,15 @@ const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLay
             </div>
 
             <div className="file-btn">
-                <IconButton name="Create Folder" icon={<i className="bi bi-plus-lg"></i>} onClick={newDirEvent} />
-                <IconInputFile name="Upload" icon={<i className="bi bi-upload"></i>} onChange={fileUploadEvent} />
+                {(copyState && !thisTrash) && <IconButton name="Paste" icon={<i className="bi bi-clipboard-plus"></i>} onClick={() => alert()} />}
+                {
+                    !thisTrash &&
+                    <>
+                        <IconButton name="Create Folder" icon={<i className="bi bi-plus-lg"></i>} onClick={newDirEvent} />
+                        <IconInputFile name="Upload" icon={<i className="bi bi-upload"></i>} onChange={fileUploadEvent} />
+                    </>
+
+                }
                 <ToogleButton
                     iconLeft={<i className="bi bi-grid-3x3-gap-fill"></i>}
                     iconRight={<i className="bi bi-list-ul"></i>}
