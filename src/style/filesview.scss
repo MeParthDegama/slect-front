@@ -151,6 +151,11 @@
             background-size: 100%;
         }
 
+        .mod-time{
+            margin-left: auto !important;
+            display: none;
+        }
+
         &:hover {
             span {
                 background: $btn-color;
@@ -200,6 +205,10 @@
             .icon {
                 width: 59px;
                 height: 100%;
+            }
+
+            .mod-time{
+                display: unset;
             }
 
             span {

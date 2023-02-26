@@ -17,7 +17,7 @@ const HomePage = () => {
     let [fileLineView, setFileLineView] = useState(false)
 
     let token = useAppSelector(s => s.token.token)
-    let [fileList, setFileList] = useState([{ name: "!~!~", isdir: false, size: 0 }])
+    let [fileList, setFileList] = useState([{ name: "!~!~", isdir: false, size: 0, mod_time: "" }])
     let [fileIsLoad, setFileIsLoad] = useState(true)
 
     let [currPath, setCurrPath] = useState("")
@@ -30,7 +30,7 @@ const HomePage = () => {
     let [newDirErr, setNewDirErr] = useState("")
 
     let [conMenuPorp, setConMenuPorp] = useState({ top: 0, left: 0, display: "none", transform: "" })
-    let [activeMenuFile, setActiveMenuFile] = useState({ name: "!~!~", isdir: false, size: 0 })
+    let [activeMenuFile, setActiveMenuFile] = useState({ name: "!~!~", isdir: false, size: 0, mod_time: "" })
 
     let [viewReModal, setViewReModal] = useState(false)
     let [renameFileName, setRenameFileName] = useState("")
@@ -336,6 +336,7 @@ const HomePage = () => {
                                     if (!e["name"].startsWith(".")) {
                                         let size = byteSize(e["size"])
                                         return <FileItem
+                                            modTime={e["mod_time"]}
                                             name={e["name"]}
                                             icon={e["isdir"] ? "folder" : "file"}
                                             onClick={() => e["isdir"] && loadFiles(e["name"])}
