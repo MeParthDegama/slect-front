@@ -23,6 +23,8 @@ const SideBar = () => {
 
     const cookie = new Cookies()
 
+    let path = window.location.pathname
+
     // tmp
     const showConnError = () => {
         dispatch(setConnError())
@@ -74,10 +76,10 @@ const SideBar = () => {
 
             <div className="nav-bar">
                 <span className="group-title">File Manager</span>
-                <IconButton ivc={true} active={true} onClick={() => navigate("/")} name="Home" icon={<i className="bi bi-house-door-fill"></i>} />
-                <IconButton ivc={true} active={false} name="Recent" icon={<i className="bi bi-arrow-counterclockwise"></i>} />
-                <IconButton ivc={true} active={false} name="Shared Files" icon={<i className="bi bi-share-fill"></i>} />
-                <IconButton ivc={true} active={false} onClick={() => navigate("/trash")} name="Trash Bin" icon={<i className="bi bi-trash3-fill"></i>} />
+                <IconButton ivc={true} active={path === "/"} onClick={() => navigate("/")} name="Home" icon={<i className="bi bi-house-door-fill"></i>} />
+                <IconButton ivc={true} active={path === "/Recent"} name="Recent" icon={<i className="bi bi-arrow-counterclockwise"></i>} />
+                <IconButton ivc={true} active={path === "/share"} name="Shared Files" icon={<i className="bi bi-share-fill"></i>} />
+                <IconButton ivc={true} active={path === "/trash"} onClick={() => navigate("/trash")} name="Trash Bin" icon={<i className="bi bi-trash3-fill"></i>} />
 
                 <span className="group-title">Libery</span>
                 <IconButton ivc={true} active={false} name="Images" icon={<i className="bi bi-image"></i>} />

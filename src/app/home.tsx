@@ -9,9 +9,16 @@ import byteSize from "byte-size"
 import Modal from "../elements/modal";
 import { Input } from "../elements/input";
 import { Button, IconButton } from "../elements/button";
+import { current } from "@reduxjs/toolkit";
 
 type HomePageProp = {
     thisTrash: boolean
+}
+
+enum copyOrCut {
+    Copy,
+    Cut,
+    Unknow
 }
 
 const HomePage = ({ thisTrash }: HomePageProp) => {
@@ -43,7 +50,7 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
 
     let [deleteFileModal, setDeleteFileModal] = useState(false)
 
-    let [copyFilePath, setCopyFilePath] = useState("")
+    let [copyOrCutFilePath, setCopyOrCutFilePath] = useState({ path: "", file: "", copyOrCut: copyOrCut.Unknow })
 
     const loadFiles = (path: string) => {
         let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
@@ -185,7 +192,7 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
             top: e.clientY,
             left: e.clientX,
             display: "block",
-            transform: `translate(-${window.innerWidth < e.clientX + 200 ? "100" : "0"}%, -${window.innerHeight < e.clientY + 120 ? "100" : "0"}%)`,
+            transform: `translate(-${window.innerWidth < e.clientX + 200 ? "100" : "0"}%, -${window.innerHeight < e.clientY + 210 ? "100" : "0"}%)`,
         })
     }
 
@@ -236,14 +243,37 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
 
     }
 
-    const copyFile = () => {
-        console.log("prev:", copyFilePath);
-        console.log("curr:", `${currPath}/${activeMenuFile.name}`)
-        setCopyFilePath(`${currPath}/${activeMenuFile.name}`)
+    const copyOrCutFile = (cut: boolean) => {
+        setCopyOrCutFilePath({
+            path: currPath,
+            file: activeMenuFile.name,
+            copyOrCut: cut ? copyOrCut.Cut : copyOrCut.Copy
+        })
     }
 
-    const cutFile = () => {
-
+    const pasteFile = () => {
+        console.log(copyOrCutFilePath, currPath);
+        API.post(
+            "/files/copy", {
+            token: token,
+            file: copyOrCutFilePath.file,
+            old_path: copyOrCutFilePath.path,
+            new_path: currPath,
+            cut: copyOrCutFilePath.copyOrCut == copyOrCut.Cut
+        }).then(r => {
+            if (r.data.status) {
+                setCopyOrCutFilePath({
+                    path: "",
+                    file: "",
+                    copyOrCut: copyOrCut.Unknow
+                })
+                reloadFiles()
+            } else {
+                dispatch(setConnError())
+            }
+        }).catch(e => {
+            dispatch(setConnError())
+        })
     }
 
     const deleteFile = () => {
@@ -272,7 +302,7 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
             fileLoadLock.current = true
             return
         }
-        loadFilesPath(!thisTrash ? "" : "/.delete")
+        loadFilesPath(!thisTrash ? "/" : "/.delete")
     }, [thisTrash])
 
     return (
@@ -282,11 +312,12 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
             onContextMenu={() => conMenuPorp.display == "block" && setConMenuPorp({ top: 0, left: 0, display: "none", transform: "" })}
         >
             <FilesHeader
-                copyState={copyFilePath != ""}
+                copyState={copyOrCutFilePath.path != ""}
                 thisTrash={thisTrash}
                 path={currPath}
                 setFilesCB={loadFilesPath}
                 fileUploadEvent={uploadFile}
+                pasteFilesCB={pasteFile}
                 newDirEvent={() => {
                     setNewDirName("");
                     setnewDirModal(true)
@@ -348,7 +379,7 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
                                             name="Copy"
                                             icon={<i className="bi bi-clipboard"></i>}
                                             onClick={() => {
-                                                copyFile()
+                                                copyOrCutFile(false)
                                             }}
                                         />
                                     </>
@@ -359,7 +390,7 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
                                     name="Cut"
                                     icon={<i className="bi bi-scissors"></i>}
                                     onClick={() => {
-                                        cutFile()
+                                        copyOrCutFile(true)
                                     }}
                                 />
                                 <IconButton
@@ -465,7 +496,7 @@ const HomePage = ({ thisTrash }: HomePageProp) => {
             <Modal
                 show={deleteFileModal}
                 title={"Delete"}
-                des={`Are you sure to ${thisTrash ? "permanent": ""} delete \`${activeMenuFile.name}\``}
+                des={`Are you sure to ${thisTrash ? "permanent" : ""} delete \`${activeMenuFile.name}\``}
                 button={
                     <>
                         <Button

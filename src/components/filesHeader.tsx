@@ -8,11 +8,12 @@ type FilesHeaderProp = {
     path: string
     setFilesCB: (path: string) => void
     changeLayout: (lineview: boolean) => void
+    pasteFilesCB: () => void
     fileUploadEvent: React.ChangeEventHandler<HTMLInputElement>
     newDirEvent: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLayout, thisTrash, copyState }: FilesHeaderProp) => {
+const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLayout, thisTrash, copyState, pasteFilesCB }: FilesHeaderProp) => {
 
     let [pwdPath, setPwdPath] = useState([""])
     let [lineView, setLineView] = useState(false)
@@ -46,7 +47,7 @@ const FilesHeader = ({ path, setFilesCB, fileUploadEvent, newDirEvent, changeLay
             </div>
 
             <div className="file-btn">
-                {(copyState && !thisTrash) && <IconButton name="Paste" icon={<i className="bi bi-clipboard-plus"></i>} onClick={() => alert()} />}
+                {(copyState && !thisTrash) && <IconButton name="Paste" icon={<i className="bi bi-clipboard-plus"></i>} onClick={() => pasteFilesCB()} />}
                 {
                     !thisTrash &&
                     <>
