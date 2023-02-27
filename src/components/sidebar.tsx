@@ -89,7 +89,7 @@ const SideBar = () => {
                 {/* <IconButton ivc={true} active={false} name="Favorites" icon={<i className="bi bi-star-fill"></i>} /> */}
 
                 <span className="group-title">System</span>
-                <IconButton ivc={true} active={false} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
+                <IconButton ivc={true} active={path.startsWith("/webterm")} onClick={() => navigate("/webterm")} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
                 <IconButton ivc={true} active={false} name="System Monitor" icon={<i className="bi bi-speedometer"></i>} />
             </div>
 

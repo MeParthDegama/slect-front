@@ -15,6 +15,7 @@ import { setProfile } from "../state/ProfileSlices";
 import { setToken } from "../state/TokenSlices";
 import HomePage from "./home";
 import NotFound from "./notFound";
+import WebTerm from "./term";
 
 const MainApp = () => {
 
@@ -136,6 +137,9 @@ const AppMainPart = () => {
                     <Route path='/pictures' element={<HomePage initPath={"/Pictures"} thisTrash={false} />} />
                     <Route path='/videos' element={<HomePage initPath={"/Videos"} thisTrash={false} />} />
                     <Route path='/documents' element={<HomePage initPath={"/Documents"} thisTrash={false} />} />
+
+                    <Route path='/webterm' element={<WebTerm />} />
+
                     <Route path='/*' element={<NotFound />} />
                 </Routes>
             </div>
