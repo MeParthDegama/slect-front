@@ -15,6 +15,7 @@ import { setProfile } from "../state/ProfileSlices";
 import { setToken } from "../state/TokenSlices";
 import HomePage from "./home";
 import NotFound from "./notFound";
+import ProcMoni from "./Proc";
 import WebTerm from "./term";
 
 const MainApp = () => {
@@ -139,6 +140,7 @@ const AppMainPart = () => {
                     <Route path='/documents' element={<HomePage initPath={"/Documents"} thisTrash={false} />} />
 
                     <Route path='/webterm' element={<WebTerm />} />
+                    <Route path='/proc' element={<ProcMoni/>} />
 
                     <Route path='/*' element={<NotFound />} />
                 </Routes>
