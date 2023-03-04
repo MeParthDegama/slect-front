@@ -77,7 +77,6 @@ const SideBar = () => {
             <div className="nav-bar">
                 <span className="group-title">File Manager</span>
                 <IconButton ivc={true} active={path === "/"} onClick={() => navigate("/")} name="Home" icon={<i className="bi bi-house-door-fill"></i>} />
-                <IconButton ivc={true} active={path.startsWith("/recent")} name="Recent" icon={<i className="bi bi-arrow-counterclockwise"></i>} />
                 <IconButton ivc={true} active={path.startsWith("/share")} name="Shared Files" icon={<i className="bi bi-share-fill"></i>} />
                 <IconButton ivc={true} active={path.startsWith("/trash")} onClick={() => navigate("/trash")} name="Trash Bin" icon={<i className="bi bi-trash3-fill"></i>} />
 

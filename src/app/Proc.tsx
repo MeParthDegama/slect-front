@@ -12,6 +12,7 @@ const ProcMoni = () => {
         memory: 0,
         memory_used: "",
         memory_total: "",
+        loading: true
     })
 
     // web term effect lock
@@ -34,6 +35,7 @@ const ProcMoni = () => {
                 memory: (r["memory_used"] / r["memory_total"]) * 100,
                 memory_used: `${memoryUsed.value} ${memoryUsed.unit}`,
                 memory_total: `${memoryTotal.value} ${memoryTotal.unit}`,
+                loading: false,
             })
         });
 
@@ -46,25 +48,34 @@ const ProcMoni = () => {
                     System Monitor
                 </div>
             </div>
-            <div className="proc-con">
-                <div className="progress-block">
-                    <div className="proc-label">
-                        CPU • {procInfo.cpu.toFixed(2)}%
+            {
+                procInfo.loading
+                    ?
+                    <div className="loading-dir">
+                        <div>
+                            <div className="spinner"></div>
+                        </div>
                     </div>
-                    <div className="progress-line">
-                        <div className="fill" style={{ width: procInfo.cpu + "%" }}></div>
-                    </div>
-                </div>
+                    :
+                    <div className="proc-con">
+                        <div className="progress-block">
+                            <div className="proc-label">
+                                CPU • {procInfo.cpu.toFixed(2)}%
+                            </div>
+                            <div className="progress-line">
+                                <div className="fill" style={{ width: procInfo.cpu + "%" }}></div>
+                            </div>
+                        </div>
 
-                <div className="progress-block">
-                    <div className="proc-label">
-                        Memory • {procInfo.memory_used} / {procInfo.memory_total}
-                    </div>
-                    <div className="progress-line">
-                        <div className="fill" style={{ width: procInfo.memory + "%" }}></div>
-                    </div>
-                </div>
-            </div>
+                        <div className="progress-block">
+                            <div className="proc-label">
+                                Memory • {procInfo.memory_used} / {procInfo.memory_total}
+                            </div>
+                            <div className="progress-line">
+                                <div className="fill" style={{ width: procInfo.memory + "%" }}></div>
+                            </div>
+                        </div>
+                    </div>}
         </>
     )
 }
