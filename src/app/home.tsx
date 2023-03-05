@@ -315,13 +315,9 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
     }
 
     const showView = (fileName: string): boolean => {
-        let fileNameSpilt = fileName.split(".")
-        let fileExt = fileNameSpilt[fileContextMenu.length - 1];
-        if (!fileExt) return false;
-
         let isValid = false;
-        ['pdf', 'jpg', 'jpeg', 'png', 'webp', 'mp4'].map((e) => {
-            if (e === fileExt.toLowerCase()) {
+        ['.pdf', '.jpg', '.jpeg', '.png', '.webp', '.mp4'].map((e) => {
+            if (fileName.toLowerCase().endsWith(e)) {
                 isValid = true
                 return
             }
@@ -330,8 +326,8 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
         return isValid
     }
 
-    const viewFile = () => {
-        let fileName = currPath + "/" + activeMenuFile["name"]
+    const viewFile = (file: string) => {
+        let fileName = currPath + "/" + file
         setShowFileName(fileName)
         setShowWiewCon(true)
         videoPlayerRef.current.load()
@@ -339,6 +335,23 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
         if (fileName.toLowerCase().endsWith(".mp4")) {
             videoPlayerRef.current.play()
         }
+    }
+
+    const fileClickEvent = (e: any) => {
+
+        if (e["isdir"]) {
+            loadFiles(e["name"])
+            return
+        }
+
+        if (showView(e["name"])) {
+            setActiveMenuFile(e)
+            viewFile(e["name"])
+            return
+        }
+
+        window.open(`${url.back}api/files/view?file=${currPath + "/" + e["name"]}&token=${token}&download=true`);
+
     }
 
     // file load effect lock
@@ -412,7 +425,7 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
                                     active={false}
                                     name="View"
                                     icon={<i className="bi bi-eye"></i>}
-                                    onClick={() => viewFile()}
+                                    onClick={() => viewFile(activeMenuFile["name"])}
                                 />}
                                 {!activeMenuFile["isdir"] && <IconButtonLink
                                     ivc={true}
@@ -473,7 +486,7 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
                                             modTime={e["mod_time"]}
                                             name={e["name"]}
                                             icon={e["isdir"] ? "folder" : "file"}
-                                            onClick={() => e["isdir"] && loadFiles(e["name"])}
+                                            onClick={() => fileClickEvent(e)}
                                             onContextMenu={(event) => fileContextMenu(event, e)}
                                             onMouseEnter={() => setFooterText(`${e["name"]} • ${e["isdir"] ? `Directory` : `File • ${size.value} ${size.unit}`}`)}
                                             onMouseLeave={() => setDirText(fileCount.file, fileCount.dir, currPath)}
