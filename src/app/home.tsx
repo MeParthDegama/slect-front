@@ -485,7 +485,8 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
                                         return <FileItem
                                             modTime={e["mod_time"]}
                                             name={e["name"]}
-                                            icon={e["isdir"] ? "folder" : "file"}
+                                            iconType={e["isdir"] ? 1 : 0}
+                                            fileName={e["name"]}
                                             onClick={() => fileClickEvent(e)}
                                             onContextMenu={(event) => fileContextMenu(event, e)}
                                             onMouseEnter={() => setFooterText(`${e["name"]} • ${e["isdir"] ? `Directory` : `File • ${size.value} ${size.unit}`}`)}
