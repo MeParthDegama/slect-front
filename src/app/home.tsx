@@ -8,7 +8,7 @@ import { setConnError } from "../state/connErrorSlices";
 import byteSize from "byte-size"
 import Modal from "../elements/modal";
 import { Input } from "../elements/input";
-import { Button, IconButton, IconButtonSquare } from "../elements/button";
+import { Button, IconButton, IconButtonLink, IconButtonSquare } from "../elements/button";
 import { current } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
 import ReactPlayer from 'react-player'
@@ -332,7 +332,6 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
 
     const viewFile = () => {
         let fileName = currPath + "/" + activeMenuFile["name"]
-        console.log(fileName);
         setShowFileName(fileName)
         setShowWiewCon(true)
         videoPlayerRef.current.load()
@@ -398,7 +397,6 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
                     }
                     return (
                         <div>
-
                             <div className="context-menu" style={conMenuPorp}>
                                 {activeMenuFile["isdir"] && <IconButton
                                     ivc={true}
@@ -415,6 +413,13 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
                                     name="View"
                                     icon={<i className="bi bi-eye"></i>}
                                     onClick={() => viewFile()}
+                                />}
+                                {!activeMenuFile["isdir"] && <IconButtonLink
+                                    ivc={true}
+                                    active={false}
+                                    name="Download"
+                                    icon={<i className="bi bi-download"></i>}
+                                    href={`${url.back}api/files/view?file=${currPath + "/" + activeMenuFile["name"]}&download=true&token=${token}`}
                                 />}
                                 {!thisTrash &&
                                     <>

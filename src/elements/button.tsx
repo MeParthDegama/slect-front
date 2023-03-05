@@ -22,7 +22,9 @@ type IconButtonProp = {
     ivc?: boolean,
     active?: boolean,
     onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined,
-    disabled?: boolean
+    disabled?: boolean,
+    href?: string,
+    target?: string
 }
 
 const IconButton = ({ name, icon, ivc, active, onClick, disabled, primary }: IconButtonProp) => {
@@ -31,6 +33,15 @@ const IconButton = ({ name, icon, ivc, active, onClick, disabled, primary }: Ico
             {icon}
             <span style={{ marginLeft: "8px" }}>{name}</span>
         </button>
+    )
+}
+
+const IconButtonLink = ({ name, icon, ivc, active, primary, href, target }: IconButtonProp) => {
+    return (
+        <a href={href} target={target} className={`btn btn-icon ${ivc ? "ivc" : ""} ${active ? "active" : ""} ${primary ? "btn-primary" : ""}`} download="123">
+            {icon}
+            <span style={{ marginLeft: "8px" }}>{name}</span>
+        </a>
     )
 }
 
@@ -71,4 +82,4 @@ const ToogleButton = ({ iconLeft, iconRight, active, onClick }: ToggleButtonProp
 }
 
 
-export { Button, IconButton, IconButtonSquare, ToogleButton }
+export { Button, IconButton, IconButtonSquare, ToogleButton, IconButtonLink }
