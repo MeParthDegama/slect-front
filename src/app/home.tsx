@@ -8,9 +8,11 @@ import { setConnError } from "../state/connErrorSlices";
 import byteSize from "byte-size"
 import Modal from "../elements/modal";
 import { Input } from "../elements/input";
-import { Button, IconButton } from "../elements/button";
+import { Button, IconButton, IconButtonSquare } from "../elements/button";
 import { current } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
+import ReactPlayer from 'react-player'
+import url from "../conf/url";
 
 type HomePageProp = {
     thisTrash: boolean
@@ -55,6 +57,12 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
     let [deleteFileModal, setDeleteFileModal] = useState(false)
 
     let [copyOrCutFilePath, setCopyOrCutFilePath] = useState({ path: "", file: "", copyOrCut: copyOrCut.Unknow })
+
+    let [showViewCon, setShowWiewCon] = useState(false)
+
+    let [showFileName, setShowFileName] = useState("")
+
+    const videoPlayerRef = React.useRef<any>(null);
 
     const loadFiles = (path: string) => {
         let pathX = currPath === "/" ? currPath + path : currPath + "/" + path
@@ -306,6 +314,34 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
         })
     }
 
+    const showView = (fileName: string): boolean => {
+        let fileNameSpilt = fileName.split(".")
+        let fileExt = fileNameSpilt[fileContextMenu.length - 1];
+        if (!fileExt) return false;
+
+        let isValid = false;
+        ['pdf', 'jpg', 'jpeg', 'png', 'webp', 'mp4'].map((e) => {
+            if (e === fileExt.toLowerCase()) {
+                isValid = true
+                return
+            }
+        })
+
+        return isValid
+    }
+
+    const viewFile = () => {
+        let fileName = currPath + "/" + activeMenuFile["name"]
+        console.log(fileName);
+        setShowFileName(fileName)
+        setShowWiewCon(true)
+        videoPlayerRef.current.load()
+
+        if (fileName.toLowerCase().endsWith(".mp4")) {
+            videoPlayerRef.current.play()
+        }
+    }
+
     // file load effect lock
     let fileLoadLock = useRef(false)
     useEffect(() => {
@@ -364,13 +400,22 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
                         <div>
 
                             <div className="context-menu" style={conMenuPorp}>
-                                <IconButton
+                                {activeMenuFile["isdir"] && <IconButton
                                     ivc={true}
                                     active={false}
                                     name="Open"
                                     icon={<i className="bi bi-box-arrow-up-right"></i>}
-                                    onClick={() => { activeMenuFile["isdir"] && loadFiles(activeMenuFile["name"]) }}
-                                />
+                                    onClick={() => {
+                                        activeMenuFile["isdir"] && loadFiles(activeMenuFile["name"])
+                                    }}
+                                />}
+                                {!activeMenuFile["isdir"] && showView(activeMenuFile["name"]) && <IconButton
+                                    ivc={true}
+                                    active={false}
+                                    name="View"
+                                    icon={<i className="bi bi-eye"></i>}
+                                    onClick={() => viewFile()}
+                                />}
                                 {!thisTrash &&
                                     <>
                                         <IconButton
@@ -523,6 +568,26 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
                 }
                 onClose={() => setDeleteFileModal(false)}
             />
+            <div className="view-file" style={{ display: showViewCon ? "block" : "none" }}>
+                <div className="close-button">
+                    <IconButtonSquare icon={<i className="bi bi-x-lg"></i>} onClick={() => {
+                        setShowWiewCon(false)
+                        videoPlayerRef.current.pause()
+                    }} />
+                </div>
+                {showFileName.toLowerCase().endsWith(".pdf") ?
+                    <iframe src={`${url.back}api/files/view?file=${showFileName}&token=${token}`} style={{ width: "100%", height: "100%" }} />
+                    :
+                    (
+                        showFileName.toLowerCase().endsWith(".mp4") ?
+                            <video ref={videoPlayerRef} id="videoPlayer" controls style={{ height: "100%", width: "100%" }}>
+                                <source src={`${url.back}api/files/view?file=${showFileName}&token=${token}`} type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
+                            </video>
+                            :
+                            <img style={{ width: "100%", height: "100%", objectFit: "contain" }} src={`${url.back}api/files/view?file=${showFileName}&token=${token}`} />
+                    )}
+
+            </div>
         </div>
     )
 }

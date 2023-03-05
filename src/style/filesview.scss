@@ -68,6 +68,32 @@
         height: 100vh;
     }
 
+    .view-file {
+        height: 95%;
+        width: 95%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: $btn-color;
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+        padding: 5px;
+        border-radius: $radius;
+
+        .close-button {
+            position: absolute;
+            top: 0%;
+            right: 0%;
+            z-index: 100000;
+
+            button i {
+                margin: auto;
+            }
+        }
+
+    }
+
 }
 
 .empty-dir {
@@ -151,7 +177,7 @@
             background-size: 100%;
         }
 
-        .mod-time{
+        .mod-time {
             margin-left: auto !important;
             display: none;
         }
@@ -191,7 +217,7 @@
 
     &.line-view {
 
-    margin: 10px 0px;
+        margin: 10px 0px;
         display: block;
 
         .file-item {
@@ -207,7 +233,7 @@
                 height: 100%;
             }
 
-            .mod-time{
+            .mod-time {
                 display: unset;
             }
 
