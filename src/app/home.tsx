@@ -73,7 +73,7 @@ const HomePage = ({ thisTrash, initPath }: HomePageProp) => {
 
     const loadFilesPath = (path: string) => {
 
-        ["/Pictures", "/Videos", "/Documents"].map((e) => {
+        ["/Pictures", "/Videos", "/Music", "/Documents"].map((e) => {
             if (path.startsWith(e)) {
                 navigate(e.toLowerCase())
             }

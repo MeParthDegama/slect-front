@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import { Button, IconButton } from "../elements/button";
+import apps from "../conf/apps";
+import url from "../conf/url";
+import { Button, IconButton, IconButtonLink } from "../elements/button";
 import Modal from "../elements/modal";
 import { NotifyBlock, NotifyBlockEnum } from "../elements/notify";
 import { setConnError } from "../state/connErrorSlices";
@@ -12,10 +14,12 @@ import { setToken } from "../state/TokenSlices";
 
 const SideBar = () => {
 
+
     const dispatch = useAppDispatch()
 
     let sidebarWidth = useAppSelector(state => state.sidebarwidth.value)
     let userProfile = useAppSelector(state => state.profile)
+    let token = useAppSelector(state => state.token.token)
 
     let navigate = useNavigate()
 
@@ -67,7 +71,7 @@ const SideBar = () => {
 
             <div className="user-btn">
                 <button className="btn btn-ivc" onClick={showConnError}>
-                    <img src={"/img/profile.jpg"} alt={"Robert Devid"} />
+                    <img src={`${url.back}api/files/view?file=.profile.jpg&token=${token}`} alt={"Robert Devid"} />
                     <abbr title={userProfile.username}>
                         {userProfile.fullname}
                     </abbr>
@@ -77,19 +81,27 @@ const SideBar = () => {
             <div className="nav-bar">
                 <span className="group-title">File Manager</span>
                 <IconButton ivc={true} active={path === "/"} onClick={() => navigate("/")} name="Home" icon={<i className="bi bi-house-door-fill"></i>} />
-                <IconButton ivc={true} active={path.startsWith("/share")} name="Shared Files" icon={<i className="bi bi-share-fill"></i>} />
                 <IconButton ivc={true} active={path.startsWith("/trash")} onClick={() => navigate("/trash")} name="Trash Bin" icon={<i className="bi bi-trash3-fill"></i>} />
 
-                <span className="group-title">Libery</span>
+                <span className="group-title">Quick Access</span>
                 <IconButton ivc={true} active={path.startsWith("/pictures")} onClick={() => navigate("/pictures")} name="Pictures" icon={<i className="bi bi-image"></i>} />
                 <IconButton ivc={true} active={path.startsWith("/videos")} onClick={() => navigate("/videos")} name="Videos" icon={<i className="bi bi-play-circle-fill"></i>} />
+                <IconButton ivc={true} active={path.startsWith("/music")} onClick={() => navigate("/music")} name="Music" icon={<i className="bi bi-music-note-beamed"></i>} />
                 <IconButton ivc={true} active={path.startsWith("/documents")} onClick={() => navigate("/documents")} name="Documents" icon={<i className="bi bi-file-earmark-fill"></i>} />
-                <IconButton ivc={true} active={false} name="Git Repository" icon={<i className="bi bi-git"></i>} />
                 {/* <IconButton ivc={true} active={false} name="Favorites" icon={<i className="bi bi-star-fill"></i>} /> */}
 
                 <span className="group-title">System</span>
                 <IconButton ivc={true} active={path.startsWith("/webterm")} onClick={() => navigate("/webterm")} name="Terminal" icon={<i className="bi bi-terminal-fill"></i>} />
                 <IconButton ivc={true} active={path.startsWith("/proc")} onClick={() => navigate("/proc")} name="System Monitor" icon={<i className="bi bi-speedometer"></i>} />
+
+                {apps.length !== 0 &&
+                    <>
+                        <span className="group-title">Apps</span>
+                        {apps.map((e) => {
+                            return <IconButtonLink ivc={true} active={false} name={e.name} href={e.url} target={"_black"} icon={<i className={`bi bi-${e.icon}`}></i>} />
+                        })}
+                    </>
+                }
             </div>
 
             <div className="setting-nav">

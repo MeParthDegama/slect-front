@@ -137,6 +137,7 @@ const AppMainPart = () => {
                     <Route path='/files' element={<HomePage thisTrash={false} />} />
                     <Route path='/pictures' element={<HomePage initPath={"/Pictures"} thisTrash={false} />} />
                     <Route path='/videos' element={<HomePage initPath={"/Videos"} thisTrash={false} />} />
+                    <Route path='/music' element={<HomePage initPath={"/Music"} thisTrash={false} />} />
                     <Route path='/documents' element={<HomePage initPath={"/Documents"} thisTrash={false} />} />
 
                     <Route path='/webterm' element={<WebTerm />} />
