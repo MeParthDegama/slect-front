@@ -6,7 +6,7 @@ type Apps = {
 
 let apps: Apps[] = [
     { name: "GitHub", icon: "github", url: "https://github.com/" },
-    { name: "VS Code", icon: "code-slash", url: "https://gitlab.com/" },
+    { name: "VS Code", icon: "code-slash", url: "https://vscode.dev/" },
 ]
 
 export default apps
